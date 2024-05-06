@@ -409,12 +409,11 @@ public class DatabaseFunctions {
     public static ResultSet getAllCustomers() {
 
         ResultSet allDataRs = null;
-        PreparedStatement queryStatement = null;
+        PreparedStatement queryStatement;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
                     SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
-                    WHERE current_status = true;
                     """);
             allDataRs = queryStatement.executeQuery();
 
@@ -491,12 +490,11 @@ public class DatabaseFunctions {
 
     public static ResultSet getAllEmployees() {
         ResultSet allDataRs = null;
-        PreparedStatement queryStatement = null;
+        PreparedStatement queryStatement;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    SELECT id, first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, access, email FROM employees
-                    WHERE current_status = true;""");
+                    SELECT id, first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, access, email FROM employees""");
             allDataRs = queryStatement.executeQuery();
 
         } catch (SQLException e) {
@@ -512,8 +510,7 @@ public class DatabaseFunctions {
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    SELECT id, description, amount, selected_date, month, year FROM expenses
-                    WHERE current_status = true;""");
+                    SELECT id, description, amount, selected_date, month, year FROM expenses""");
             expensesRs = queryStatement.executeQuery();
         } catch (SQLException e) {
             System.out.println("Error : " + e);
@@ -631,7 +628,7 @@ public class DatabaseFunctions {
         switch (Login.queryOption) {
             case "username" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE current_status = true AND username = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE username = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
@@ -647,7 +644,7 @@ public class DatabaseFunctions {
 
             case "email" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE current_status = true AND email = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE email = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
@@ -718,9 +715,7 @@ public class DatabaseFunctions {
 
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT username FROM customers
-                    WHERE current_status = true;""");
+            queryStatement = dbConnection.prepareStatement("SELECT username FROM customers");
 
             allUsernamesRs = queryStatement.executeQuery();
 
@@ -734,9 +729,7 @@ public class DatabaseFunctions {
         }
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT username FROM employees
-                    WHERE current_status = true;""");
+            queryStatement = dbConnection.prepareStatement("SELECT username FROM employees");
 
             allUsernamesRs = queryStatement.executeQuery();
 
@@ -761,9 +754,7 @@ public class DatabaseFunctions {
 
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT email FROM customers
-                    WHERE current_status = true;""");
+            queryStatement = dbConnection.prepareStatement("SELECT email FROM customers");
 
             allEmailsRs = queryStatement.executeQuery();
 
@@ -778,9 +769,7 @@ public class DatabaseFunctions {
         }
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT email FROM employees
-                    WHERE current_status = true;""");
+            queryStatement = dbConnection.prepareStatement("SELECT email FROM employees");
 
             allEmailsRs = queryStatement.executeQuery();
 
@@ -804,10 +793,7 @@ public class DatabaseFunctions {
         int allCustomers = 0;
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT COUNT(id)
-                    FROM customers
-                    WHERE current_status = true;""");
+            queryStatement = dbConnection.prepareStatement("SELECT COUNT(id) FROM customers");
 
             ResultSet customersRs = queryStatement.executeQuery();
 
@@ -839,7 +825,7 @@ public class DatabaseFunctions {
             try {
                 queryStatement = dbConnection.prepareStatement("""
                         SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
-                        WHERE email = ? AND current_status = true;
+                        WHERE email = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
                 allDataRs = queryStatement.executeQuery();
@@ -870,7 +856,7 @@ public class DatabaseFunctions {
             try {
                 queryStatement = dbConnection.prepareStatement("""
                         SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
-                        WHERE username = ? AND current_status = true;
+                        WHERE username = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
                 allDataRs = queryStatement.executeQuery();
@@ -909,7 +895,7 @@ public class DatabaseFunctions {
             try {
                 queryStatement = dbConnection.prepareStatement("""
                     SELECT id, first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, access, email FROM employees
-                    WHERE email = ? AND current_status = true;""");
+                    WHERE email = ?;""");
 
                 queryStatement.setString(1, usernameEmail);
                 allDataRs = queryStatement.executeQuery();
@@ -938,7 +924,7 @@ public class DatabaseFunctions {
             try {
                 queryStatement = dbConnection.prepareStatement("""
                         SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
-                        WHERE username = ? AND current_status = true;
+                        WHERE username = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
                 allDataRs = queryStatement.executeQuery();

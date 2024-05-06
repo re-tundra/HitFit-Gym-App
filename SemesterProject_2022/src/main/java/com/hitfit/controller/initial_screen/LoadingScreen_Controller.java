@@ -64,20 +64,17 @@ public class LoadingScreen_Controller implements Initializable {
                         }
                     });
                 } else {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LoginSignUp.fxml"));
-                            try {
-                                scene = new Scene(fxmlLoader.load());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            stage.setScene(scene);
-                            stage.initStyle(StageStyle.UNDECORATED);
-                            stage.show();
-                            loadingStage.getScene().getWindow().hide();
+                    Platform.runLater(() -> {
+                        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LoginSignUp.fxml"));
+                        try {
+                            scene = new Scene(fxmlLoader.load());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
+                        stage.setScene(scene);
+                        stage.initStyle(StageStyle.UNDECORATED);
+                        stage.show();
+                        loadingStage.getScene().getWindow().hide();
                     });
 
                 }
