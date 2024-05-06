@@ -1,6 +1,6 @@
 package backend_functions;
 
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.NoSuchAlgorithmException;

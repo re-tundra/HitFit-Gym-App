@@ -1,10 +1,10 @@
-package model_class;
+package com.hitfit.model_class;
 
 import backend_functions.CustomDate;
 import com.hitfit.controller.employees.EmployeesDetailCard_Controller;
 import com.hitfit.controller.CustomMenuButton;
 import com.hitfit.controller.employees.EmployeesPanel_Controller;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 
@@ -57,7 +57,7 @@ public class Employee extends Person {
             EmployeesDetailCard_Controller.Emails=actionbtn.getEmail();
             EmployeesDetailCard_Controller.Username=actionbtn.getUsername();
             EmployeesDetailCard_Controller.Designation=actionbtn.getDesignation();
-            EmployeesDetailCard_Controller.Salary="Rs. "+String.valueOf(actionbtn.getSalary());
+            EmployeesDetailCard_Controller.Salary="Rs. "+ actionbtn.getSalary();
             try {
                 EmployeesPanel_Controller.view();
             } catch (IOException e) {

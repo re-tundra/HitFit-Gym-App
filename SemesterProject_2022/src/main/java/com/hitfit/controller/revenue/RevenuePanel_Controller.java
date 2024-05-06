@@ -1,14 +1,14 @@
 package com.hitfit.controller.revenue;
 
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import model_class.Expense;
-import model_class.Revenue;
+import com.hitfit.model_class.Expense;
+import com.hitfit.model_class.Revenue;
 
 import java.io.IOException;
 import java.net.URL;

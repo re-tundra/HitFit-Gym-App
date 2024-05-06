@@ -18,6 +18,7 @@ import java.util.Properties;
 
 public class LogIn_Form_Controller {
 
+    private final String adminCreds = "admin";
 
     @FXML
     private TextField EmailField;
@@ -88,7 +89,7 @@ public class LogIn_Form_Controller {
             PassField.setText("");
         }
 
-        else if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus() && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
+        else if (!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus() && epValidation.getText().isEmpty() && passwordValidation.getText().isEmpty()) {
             if(response.isSelected()){
                 Properties properties = new Properties();
                 properties.setProperty("Username",email);
@@ -98,7 +99,7 @@ public class LogIn_Form_Controller {
                     properties.store(outputStream, null);
                 }
                 catch (Exception error){
-                    System.out.println(error);
+                    System.out.println(error.getLocalizedMessage());
                 }
             }
             new GeneralFunctions().switchSceneFXHelper(e, "CustomerPanel.fxml");
@@ -113,26 +114,28 @@ public class LogIn_Form_Controller {
             epValidation.setText("! Email cannot be empty");
             EmailField.setStyle(errorStyle);
             EmailField.setText("");
+            return;
         }
-        else if (!email.equals("AyaanAli@9921")) {
+        else if (!email.equals(adminCreds)) {
             epValidation.setText("! Invalid email or username");
             EmailField.setStyle(errorStyle);
             EmailField.setText("");
+            return;
         }
 
         if (password.isEmpty() || password.isBlank()) {
             passwordValidation.setText("! Password cannot be empty");
             PassField.setStyle(errorStyle);
             PassField.setText("");
-        }
-
-        else if (!password.equals("L3tM31n_121")) {
+            return;
+        } else if (!password.equals(adminCreds)) {
             passwordValidation.setText("! Password Incorrect");
             PassField.setStyle(errorStyle);
             PassField.setText("");
+            return;
         }
 
-            else if (email.equals("AyaanAli@9921") && password.equals("L3tM31n_121") && epValidation.getText().equals("") && passwordValidation.getText().equals("")) {
+        if (epValidation.getText().isEmpty() && passwordValidation.getText().isEmpty()) {
             new GeneralFunctions().switchSceneFXHelper(e, "AdminPanel.fxml");
 
         }

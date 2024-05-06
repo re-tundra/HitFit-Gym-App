@@ -9,7 +9,7 @@ import com.mailjet.client.transactional.SendEmailsRequest;
 import com.mailjet.client.transactional.TrackOpens;
 import com.mailjet.client.transactional.TransactionalEmail;
 import com.mailjet.client.transactional.response.SendEmailsResponse;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

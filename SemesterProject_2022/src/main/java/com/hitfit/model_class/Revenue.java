@@ -1,4 +1,4 @@
-package model_class;
+package com.hitfit.model_class;
 
 import java.util.Date;
 

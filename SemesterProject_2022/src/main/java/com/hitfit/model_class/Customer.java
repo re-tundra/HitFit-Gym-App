@@ -1,9 +1,9 @@
-package model_class;
+package com.hitfit.model_class;
 
 import com.hitfit.controller.members_only.MembersDetailCard_Controller;
 import com.hitfit.controller.members_only.MembersPanel_Controller;
 import com.hitfit.controller.CustomMenuButton;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.scene.control.*;
 import javafx.scene.paint.Paint;
 

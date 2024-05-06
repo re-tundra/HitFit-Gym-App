@@ -5,15 +5,15 @@ import backend_functions.Email;
 import backend_functions.Password;
 import backend_functions.Username;
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import model_class.Customer;
-import model_class.Transaction;
+import com.hitfit.model_class.Customer;
+import com.hitfit.model_class.Transaction;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -189,7 +189,7 @@ public class SignUp_Controller {
             password.setStyle(errorStyle);
             cPassword.setStyle(errorStyle);
         }
-        else if (fNameValidation.getText().isBlank() && lNameValidation.getText().equals("") && userNameValidation.getText().equals("") && emailValidation.getText().equals("") && passwordValidation.getText().equals("") && apiResponse.equals(true)){
+        else if (fNameValidation.getText().isBlank() && lNameValidation.getText().isEmpty() && userNameValidation.getText().isEmpty() && emailValidation.getText().isEmpty() && passwordValidation.getText().isEmpty() && apiResponse.equals(true)){
             new GeneralFunctions().switchScene(e,"SignUp_Personal_Info.fxml");
         }
     }

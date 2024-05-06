@@ -1,8 +1,8 @@
-package model_class;
+package com.hitfit.model_class;
 
 import com.hitfit.controller.CustomMenuButton;
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 

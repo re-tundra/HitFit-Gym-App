@@ -1,6 +1,6 @@
 package com.hitfit.controller.dashboard;
 
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

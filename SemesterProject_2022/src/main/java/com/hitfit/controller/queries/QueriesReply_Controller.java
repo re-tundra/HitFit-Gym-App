@@ -1,7 +1,7 @@
 package com.hitfit.controller.queries;
 
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

@@ -4,14 +4,14 @@ import backend_functions.Email;
 import backend_functions.Password;
 import backend_functions.Username;
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model_class.Employee;
+import com.hitfit.model_class.Employee;
 
 import java.sql.Date;
 import java.time.LocalDate;

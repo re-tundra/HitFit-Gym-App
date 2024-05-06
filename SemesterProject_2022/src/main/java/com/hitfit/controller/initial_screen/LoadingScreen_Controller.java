@@ -1,7 +1,7 @@
 package com.hitfit.controller.initial_screen;
 
 import com.hitfit.Main;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

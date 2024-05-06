@@ -1,14 +1,13 @@
-package database;
+package com.hitfit.database;
 
 import backend_functions.CustomDate;
 import backend_functions.Login;
 import com.hitfit.controller.customer.CustomerPanel_Controller;
 import com.hitfit.controller.employees.EmployeesPanel_Controller;
-import model_class.*;
+import com.hitfit.model_class.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class DatabaseFunctions {
 
@@ -314,7 +313,7 @@ public class DatabaseFunctions {
         }
     }
 
-    public static boolean updateTransactionStatus(int transactionId) {
+    public static void updateTransactionStatus(int transactionId) {
 
         PreparedStatement queryStatement = null;
         PreparedStatement queryStatement2 = null;
@@ -366,11 +365,8 @@ public class DatabaseFunctions {
             Revenue revenue = new Revenue(DatabaseFunctions.generateId("revenues"), CustomDate.getCurrentMonth(), CustomDate.getCurrentYear(), transactionAmount);
             DatabaseFunctions.saveUpdateToDb(revenue);
 
-            return true;
-
         } catch (SQLException e) {
             System.out.println("Error! Could not run query: " + e);
-            return false;
         }
     }
 

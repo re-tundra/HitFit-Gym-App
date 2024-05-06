@@ -3,7 +3,7 @@ package com.hitfit.controller.initial_screen;
 import backend_functions.Email;
 import backend_functions.Password;
 import com.hitfit.controller.GeneralFunctions;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

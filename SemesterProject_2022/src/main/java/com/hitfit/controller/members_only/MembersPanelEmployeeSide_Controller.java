@@ -1,7 +1,7 @@
 package com.hitfit.controller.members_only;
 
 import com.hitfit.controller.CustomMenuButton;
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -17,7 +17,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model_class.Customer;
+import com.hitfit.model_class.Customer;
 
 import java.io.IOException;
 import java.net.URL;

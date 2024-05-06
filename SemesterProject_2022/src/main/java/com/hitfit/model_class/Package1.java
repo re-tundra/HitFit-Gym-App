@@ -1,4 +1,4 @@
-package model_class;
+package com.hitfit.model_class;
 
 public class Package1 extends Package{
     public Package1(int PACKAGE_NO, String description) {

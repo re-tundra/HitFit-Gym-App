@@ -1,6 +1,6 @@
 package backend_functions;
 
-import database.DatabaseFunctions;
+import com.hitfit.database.DatabaseFunctions;
 
 import java.util.ArrayList;
 
