@@ -2,8 +2,8 @@ package database;
 
 import backend_functions.CustomDate;
 import backend_functions.Login;
-import com.example.semesterProject_2022.CustomerPanel_Controller;
-import com.example.semesterProject_2022.EmployeesPanel_Controller;
+import com.hitfit.controller.customer.CustomerPanel_Controller;
+import com.hitfit.controller.employees.EmployeesPanel_Controller;
 import model_class.*;
 
 import java.sql.*;
@@ -12,9 +12,9 @@ import java.util.Objects;
 
 public class DatabaseFunctions {
 
-    private static final String dbUrl = ""; //Add your db url here
-    private static final String dbUsername = ""; //Add your db username here
-    private static final String dbPassword = ""; //Add your db password here
+    private static final String dbUrl = "jdbc:mysql://localhost:3306/gym_database?useSSL=false";
+    private static final String dbUsername = "root";
+    private static final String dbPassword = "password";
 
     private static Connection dbConnection = null;
 
@@ -191,7 +191,7 @@ public class DatabaseFunctions {
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    INSERT INTO defaultdb.bmi (id, weight, recorded_date, fk_customer_id, recorded_month, height, bmi_value)
+                    INSERT INTO bmi (id, weight, recorded_date, fk_customer_id, recorded_month, height, bmi_value)
                     VALUES (?,?,?,?,?,?,?);
                     """);
 
@@ -568,8 +568,8 @@ public class DatabaseFunctions {
         } catch (SQLException e) {
             System.out.println("Error : " + e);
         }
-        return expensesRs;
 
+        return expensesRs;
     }
 
     public static ResultSet getAllBmiInfo() {

@@ -1,10 +1,9 @@
 package model_class;
 
 import backend_functions.CustomDate;
-import com.example.semesterProject_2022.CustomMenuButton;
-import com.example.semesterProject_2022.EmployeesDetailCard_Controller;
-import com.example.semesterProject_2022.EmployeesPanel_Controller;
-import com.example.semesterProject_2022.MembersPanel_Controller;
+import com.hitfit.controller.employees.EmployeesDetailCard_Controller;
+import com.hitfit.controller.CustomMenuButton;
+import com.hitfit.controller.employees.EmployeesPanel_Controller;
 import database.DatabaseFunctions;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;

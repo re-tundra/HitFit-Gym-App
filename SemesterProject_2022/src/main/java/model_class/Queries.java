@@ -1,8 +1,11 @@
 package model_class;
 
 import backend_functions.CustomDate;
-import com.example.semesterProject_2022.*;
-import javafx.css.StyleConverter;
+import com.hitfit.controller.GeneralFunctions;
+import com.hitfit.controller.queries.QueriesPanel_Controller;
+import com.hitfit.controller.queries.QueriesReply_Controller;
+import com.hitfit.controller.queries.QueryMenuButton;
+import com.hitfit.controller.queries.QueryView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
 

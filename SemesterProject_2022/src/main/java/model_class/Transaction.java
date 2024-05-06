@@ -1,7 +1,7 @@
 package model_class;
 
-import com.example.semesterProject_2022.CustomMenuButton;
-import com.example.semesterProject_2022.GeneralFunctions;
+import com.hitfit.controller.CustomMenuButton;
+import com.hitfit.controller.GeneralFunctions;
 import database.DatabaseFunctions;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Paint;
