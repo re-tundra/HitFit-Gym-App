@@ -106,6 +106,7 @@ public class LogIn_Form_Controller {
 
         }
     }
+
     public void adminLogin(ActionEvent e) throws IOException {
         email = EmailField.getText();
         password = PassField.getText();
@@ -145,7 +146,7 @@ public class LogIn_Form_Controller {
         Login newLogin = new Login();
         newLogin.setEmailUsername(userName);
         newLogin.setPassword(Password);
-        if(!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus()){
+        if(!newLogin.checkUsernameEmail() && newLogin.userLoggedInStatus()) {
             new GeneralFunctions().switchScene("CustomerPanel.fxml");
         }
     }

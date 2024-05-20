@@ -18,8 +18,6 @@ import com.hitfit.model_class.Transaction;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static backend_functions.Email.validateEmail;
-
 public class SignUp_Controller {
     private static String firstName;
     private static String lastName;
@@ -31,8 +29,10 @@ public class SignUp_Controller {
     private static String userAddress;
     private static String gender;
     private static String userWeight;
+    private static String userHeight;
     private static LocalDate dob;
-    private static  int monthlyPlan;
+    private static int monthlyPlan;
+    private static int paymentMethod = 0;
     private static String nameOfBank;
     private static String userBankAccountName;
     private static String tilID;
@@ -43,7 +43,7 @@ public class SignUp_Controller {
     String resetStyle = "-fx-border-color: transparent; -fx-border-width: 3px; -fx-border-radius:12px";
 
     String alphabetRegex = "^[a-zA-Z ]*$";
-    String numericRegex = "^[0-9]*$";
+    String numericRegex = "^[0-9.]*$";
 
     @FXML
     private AnchorPane Main;
@@ -64,6 +64,8 @@ public class SignUp_Controller {
     @FXML
     private TextField weight;
     @FXML
+    private TextField height;
+    @FXML
     private RadioButton male;
     @FXML
     private RadioButton female;
@@ -79,6 +81,8 @@ public class SignUp_Controller {
     private TextField accountName;
     @FXML
     private TextField bankName;
+    @FXML
+    private MenuButton payment_method_select;
     @FXML
     private MenuButton package_select;
     @FXML
@@ -112,7 +116,7 @@ public class SignUp_Controller {
 
     @FXML
     private Label packageValidation;
-    private Boolean apiResponse = null;
+    private Boolean apiResponse = true;
 
     public void nextForm(ActionEvent e) throws IOException {
         firstName = fName.getText();
@@ -124,9 +128,9 @@ public class SignUp_Controller {
 
 
 
-        if(!emailField.isBlank() && !emailField.isEmpty()){
-            apiResponse = validateEmail(emailField);
-        }
+//        if(!emailField.isBlank() && !emailField.isEmpty()){
+//            apiResponse = validateEmail(emailField);
+//        }
 
         if(firstName.isBlank() || firstName.isEmpty()){
             fNameValidation.setText("! FirstName Cannot Be Empty");
@@ -170,10 +174,10 @@ public class SignUp_Controller {
             emailValidation.setText("! Email Already Exists");
             email.setStyle(errorStyle);
         }
-        else if(apiResponse.equals(false)){
-            emailValidation.setText("! Invalid Email");
-            email.setStyle(errorStyle);
-        }
+//        else if(apiResponse.equals(false)) {
+//            emailValidation.setText("! Invalid Email");
+//            email.setStyle(errorStyle);
+//        }
 
         if(confirmPassword.isBlank()){
             cPassword.setStyle(errorStyle);
@@ -196,10 +200,11 @@ public class SignUp_Controller {
 
     public void paymentForm(ActionEvent e) throws IOException {
         phoneNumber = pNumber.getText();
-        nic = cnic.getText();
+//        nic = cnic.getText();
         userAddress = address.getText();
         dob = date.getValue();
         userWeight = weight.getText();
+        userHeight = height.getText();
 
         if(male.isSelected()){
             gender = "male";
@@ -223,18 +228,19 @@ public class SignUp_Controller {
             pNumber.setStyle(errorStyle);
         }
 
-        if(nic.isBlank()){
-            nicValidation.setText("! NIC cannot be cannot be empty");
-            cnic.setStyle(errorStyle);
-        }
-        else if(nic.length() != 13){
-            nicValidation.setText("! NIC must contain exactly 13 digits");
-            cnic.setStyle(errorStyle);
-        }
-        else if (!nic.matches(numericRegex)) {
-            nicValidation.setText("! NIC cannot contain letters");
-            cnic.setStyle(errorStyle);
-        }
+//        if(nic.isBlank()){
+//            nicValidation.setText("! NIC cannot be cannot be empty");
+//            cnic.setStyle(errorStyle);
+//        }
+//        else if(nic.length() != 13){
+//            nicValidation.setText("! NIC must contain exactly 13 digits");
+//            cnic.setStyle(errorStyle);
+//        }
+//        else if (!nic.matches(numericRegex)) {
+//            nicValidation.setText("! NIC cannot contain letters");
+//            cnic.setStyle(errorStyle);
+//        }
+
         if(userWeight.equals("0")){
             weightValidation.setText("! Invalid weight");
             weight.setStyle(errorStyle);
@@ -247,11 +253,26 @@ public class SignUp_Controller {
             weightValidation.setText("! Weight cannot be in letters");
             weight.setStyle(errorStyle);
         }
+
+        if(userHeight.equals("0")){
+            weightValidation.setText("! Invalid height");
+            height.setStyle(errorStyle);
+        }
+        else if (userHeight.isBlank() || userHeight.isEmpty()) {
+            weightValidation.setText("! Height Cannot Be empty");
+            height.setStyle(errorStyle);
+        }
+        else if (!userHeight.matches(numericRegex)) {
+            weightValidation.setText("! Height cannot be in letters");
+            height.setStyle(errorStyle);
+        }
+
         try{
             if(date.equals(null)){
                 dateValidation.setText("! Date of Birth cannot be empty");
                 date.setStyle(errorStyle);
             }
+
             else if(dob.getYear() == 2022){
                 dateValidation.setText("! Invalid Date of Birth");
             }
@@ -259,24 +280,26 @@ public class SignUp_Controller {
         catch (NullPointerException event){
             dateValidation.setText("! Date of Birth cannot be empty");
         }
+
         if (phoneNoValidation.getText().isBlank() && nicValidation.getText().isBlank() && dateValidation.getText().isBlank() && weightValidation.getText().isBlank()){
             new GeneralFunctions().switchScene(e,"SignUp_Payment_Info.fxml");
         }
     }
 
     public void doneSignUp(ActionEvent e) throws IOException {
-        nameOfBank = bankName.getText();
-        tilID = transactionID.getText();
+        // nameOfBank = bankName.getText();
+        // tilID = transactionID.getText();
         userBankAccountName = accountName.getText();
 
-        if(nameOfBank.isBlank() || nameOfBank.isEmpty()){
-            bankNameValidation.setText("! Bank Name cannot be empty");
-            bankName.setStyle(errorStyle);
-        }
-        else if (!nameOfBank.matches(alphabetRegex)) {
-            bankNameValidation.setText("! Bank Name cannot contain Numbers");
-            bankName.setStyle(errorStyle);
-        }
+//        if(nameOfBank.isBlank() || nameOfBank.isEmpty()){
+//            bankNameValidation.setText("! Bank Name cannot be empty");
+//            bankName.setStyle(errorStyle);
+//        }
+//        else if (!nameOfBank.matches(alphabetRegex)) {
+//            bankNameValidation.setText("! Bank Name cannot contain Numbers");
+//            bankName.setStyle(errorStyle);
+//        }
+
         if(userBankAccountName.isBlank() || userBankAccountName.isEmpty()){
             accountNameValidation.setText("! Account Holder's Name cannot be empty");
             accountName.setStyle(errorStyle);
@@ -285,33 +308,53 @@ public class SignUp_Controller {
             accountNameValidation.setText("! Account Holder's cannot contain Numbers");
             accountName.setStyle(errorStyle);
         }
-        if(tilID.isBlank() || tilID.isEmpty()){
-            tilIDValidation.setText("! Transaction ID cannot be empty");
-            transactionID.setStyle(errorStyle);
-        }
-        else if (!tilID.matches(numericRegex)) {
-            tilIDValidation.setText("! Transaction ID cannot contain Letters");
-            transactionID.setStyle(errorStyle);
-        }
+
+//        if(tilID.isBlank() || tilID.isEmpty()){
+//            tilIDValidation.setText("! Transaction ID cannot be empty");
+//            transactionID.setStyle(errorStyle);
+//        }
+//        else if (!tilID.matches(numericRegex)) {
+//            tilIDValidation.setText("! Transaction ID cannot contain Letters");
+//            transactionID.setStyle(errorStyle);
+//        }
 
         if(monthlyPlan == 0){
             packageValidation.setText("! Please Select a Package");
         }
-        if(bankNameValidation.getText().equals("") && packageValidation.getText().equals("") && tilIDValidation.getText().equals("") && accountNameValidation.getText().equals("")){
+        if(paymentMethod == 0){
+            packageValidation.setText("! Please Select a Payment Method");
+        }
+        if(bankNameValidation.getText().isEmpty() && packageValidation.getText().isEmpty() && tilIDValidation.getText().isEmpty() && accountNameValidation.getText().isEmpty()){
 
             String[] tempArr;
             tempArr = Password.makeFinalPassword(userPassword);
             // for id generation, use "customer" for getting customer id
             // for id generation, use "transaction" for getting transaction id
 
-            Customer customer = new Customer(firstName,lastName,emailField,gender,phoneNumber,userName, tempArr[1], nic,userAddress,dob.toString(),userWeight,monthlyPlan,DatabaseFunctions.generateId("customers"), tempArr[0]);
+            Customer customer = new Customer(
+                firstName,
+                lastName,
+                emailField,
+                gender,
+                phoneNumber,
+                userName,
+                userPassword, // tempArr[1],
+                nic,
+                userAddress,
+                dob.toString(),
+                Double.parseDouble(userWeight),
+                Double.parseDouble(userHeight),
+                monthlyPlan,
+                DatabaseFunctions.generateId("customers"),
+                tempArr[0]
+            );
             DatabaseFunctions.saveToDb(customer);
 
-            Transaction transaction = new Transaction(DatabaseFunctions.generateId("transactions"), CustomDate.getCurrentDate(), monthlyPlan, tilID, nameOfBank, userBankAccountName, customer.getCustomerId(), false);
+            Transaction transaction = new Transaction(DatabaseFunctions.generateId("transactions"), CustomDate.getCurrentDate(), monthlyPlan, tilID, nameOfBank, userBankAccountName, customer.getCustomerId(), false, paymentMethod == 1 ? "Cash" : "Online");
             DatabaseFunctions.saveToDb(transaction);
 
-            Email newEmail = new Email();
-            newEmail.sendWelcomeEmail(customer.getEmail(), customer.getFirstName() + " " + customer.getLastName());
+//            Email newEmail = new Email();
+//            newEmail.sendWelcomeEmail(customer.getEmail(), customer.getFirstName() + " " + customer.getLastName());
 
             tempArr[0] = " ";
             tempArr[1] = " ";
@@ -321,15 +364,24 @@ public class SignUp_Controller {
     }
     public void starter(){
         monthlyPlan = 2000;
-        package_select.setText("Starter - Rs.2000");
+        package_select.setText("Starter - Php.2000");
     }
     public void beginner(){
         monthlyPlan = 3000;
-        package_select.setText("Beginner - Rs.3000");
+        package_select.setText("Beginner - Php.3000");
     }
     public void pro(){
         monthlyPlan = 4500;
-        package_select.setText("Pro - Rs.4500");
+        package_select.setText("Pro - Php.4500");
+    }
+
+    public void cash() {
+        paymentMethod = 1;
+        payment_method_select.setText("Cash");
+    }
+    public void online() {
+        paymentMethod = 2;
+        payment_method_select.setText("Online");
     }
     public void clear(){
         fName.setStyle(resetStyle);
@@ -349,7 +401,7 @@ public class SignUp_Controller {
     }
     public void clearTab2(){
         pNumber.setStyle(resetStyle);
-        cnic.setStyle(resetStyle);
+//        cnic.setStyle(resetStyle);
         weight.setStyle(resetStyle);
 
         phoneNoValidation.setText("");
@@ -359,9 +411,9 @@ public class SignUp_Controller {
     }
 
     public void clearTab3(){
-        bankName.setStyle(resetStyle);
+        // bankName.setStyle(resetStyle);
         accountName.setStyle(resetStyle);
-        transactionID.setStyle(resetStyle);
+        // transactionID.setStyle(resetStyle);
 
         bankNameValidation.setText("");
         accountNameValidation.setText("");

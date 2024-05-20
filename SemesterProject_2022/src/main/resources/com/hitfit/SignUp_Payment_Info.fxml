@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="600.0" prefWidth="1024.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.SignUp_Controller">
+<AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="600.0" prefWidth="1024.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.SignUp_Controller">
     <children>
         <HBox id="hbox" fx:id="hbox" layoutX="403.0" layoutY="568.0" prefHeight="37.0" prefWidth="620.0">
             <children>
@@ -40,26 +40,16 @@
                         <Font name="System Bold" size="36.0" />
                     </font>
                 </Text>
-                <Label id="l1" layoutX="79.0" layoutY="161.0" text="Select Packages" textFill="#eaf6ff">
+                <Label id="l1" layoutX="79.0" layoutY="201.0" text="Membership" textFill="#eaf6ff">
                     <font>
                         <Font name="System Italic" size="10.0" />
                     </font></Label>
-                <Label id="l2" layoutX="326.0" layoutY="161.0" text="Bank Name" textFill="#eaf6ff">
+                <Label id="l5" layoutX="79.0" layoutY="283.0" text="Account Holder's Name" textFill="#eaf6ff">
                     <font>
                         <Font name="System Italic" size="10.0" />
                     </font></Label>
-                <TextField id="t2" fx:id="bankName" layoutX="322.0" layoutY="184.0" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" />
-                <Label layoutX="79.0" layoutY="241.0" text="Transaction Id" textFill="#eaf6ff">
-                    <font>
-                        <Font name="System Italic" size="10.0" />
-                    </font></Label>
-                <TextField id="t3" fx:id="transactionID" layoutX="79.0" layoutY="264.0" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="439.0" />
-                <Label id="l5" layoutX="79.0" layoutY="322.0" text="Account Holder's Name" textFill="#eaf6ff">
-                    <font>
-                        <Font name="System Italic" size="10.0" />
-                    </font></Label>
-                <TextField id="t4" fx:id="accountName" layoutX="79.0" layoutY="344.0" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" />
-                <Button id="done" layoutX="82.0" layoutY="409.0" mnemonicParsing="false" onAction="#doneSignUp" prefHeight="30.0" prefWidth="150.0" text="Done" textFill="#eaf6ff">
+                <TextField id="t4" fx:id="accountName" layoutX="79.0" layoutY="305.0" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" />
+                <Button id="done" layoutX="82.0" layoutY="370.0" mnemonicParsing="false" onAction="#doneSignUp" prefHeight="30.0" prefWidth="150.0" text="Finish Sign Up" textFill="#eaf6ff">
                     <padding>
                         <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                     </padding></Button>
@@ -67,20 +57,11 @@
                     <font>
                         <Font size="14.0" />
                     </font></Text>
-                <Button fx:id="exit" layoutX="561.0" layoutY="14.0" minWidth="43.0" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: transparent;">
-                    <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/icons8-close-window-96.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            <MenuButton fx:id="package_select" layoutX="79.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" style="-fx-background-color: #ffffff;" text="Select a Package" textFill="#00000096">
+            <MenuButton fx:id="package_select" layoutX="79.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" style="-fx-background-color: #ffffff;" text="Select Membership" textFill="#00000096">
               <items>
-                <MenuItem fx:id="starter" mnemonicParsing="false" onAction="#starter" text="Starter - Rs.2000" />
-                <MenuItem fx:id="beginner" mnemonicParsing="false" onAction="#beginner" text="Beginner - Rs.3000" />
-                  <MenuItem fx:id="pro" mnemonicParsing="false" onAction="#pro" text="Pro - Rs.4500" />
+                <MenuItem fx:id="starter" mnemonicParsing="false" onAction="#starter" text="Starter - Php.2000" />
+                <MenuItem fx:id="beginner" mnemonicParsing="false" onAction="#beginner" text="Beginner - Php.3000" />
+                  <MenuItem fx:id="pro" mnemonicParsing="false" onAction="#pro" text="Pro - Php.4500" />
               </items>
             </MenuButton>
             <Label fx:id="bankNameValidation" layoutX="330.0" layoutY="350.0" textFill="#eaf6ff">
@@ -98,11 +79,22 @@
                   <Font name="System Italic" size="13.0" />
                </font>
             </Label>
-            <Label fx:id="packageValidation" layoutX="330.0" layoutY="470.0" textFill="#eaf6ff">
+            <Label fx:id="packageValidation" layoutX="412.0" layoutY="469.0" text="Select Packages" textFill="#eaf6ff">
                <font>
                   <Font name="System Italic" size="13.0" />
                </font>
             </Label>
+            <Label id="l1" layoutX="319.0" layoutY="201.0" text="Payment Method" textFill="#eaf6ff">
+               <font>
+                  <Font name="System Italic" size="10.0" />
+               </font>
+            </Label>
+            <MenuButton fx:id="payment_method_select" layoutX="319.0" layoutY="224.0" mnemonicParsing="false" onMouseClicked="#clearTab3" prefHeight="30.0" prefWidth="199.0" style="-fx-background-color: #ffffff;" text="Select Payment Method" textFill="#00000096">
+               <items>
+                  <MenuItem fx:id="cash" mnemonicParsing="false" onAction="#cash" text="Cash" />
+                  <MenuItem fx:id="online" mnemonicParsing="false" onAction="#online" text="Online Payment" />
+               </items>
+            </MenuButton>
             </children>
         </AnchorPane>
         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />

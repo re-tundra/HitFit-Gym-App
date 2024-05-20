@@ -35,37 +35,36 @@ public class DatabaseFunctions {
         return true;
     }
 
-    public static boolean saveToDb(Customer customer) {
+    public static void saveToDb(Customer customer) {
 
         PreparedStatement queryStatement = null;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    insert into customers (id, first_name, last_name, email, phone_number, password, username, gender, weight, dob,
-                    monthly_plan, nic, is_active, salt, address)
-                    values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);""");
+                    insert into customers (first_name, last_name, email, phone_number, password, username, gender, weight, height, dob,
+                    membership, is_active, address)
+                    values (?,?,?,?,?,?,?,?,?,?,?,?,?);""");
 
-            queryStatement.setInt(1, customer.getCustomerId());
-            queryStatement.setString(2, customer.getFirstName());
-            queryStatement.setString(3, customer.getLastName());
-            queryStatement.setString(4, customer.getEmail());
-            queryStatement.setString(5, customer.getPhoneNumber());
-            queryStatement.setString(6, customer.getPassword());
-            queryStatement.setString(7, customer.getUserName());
-            queryStatement.setString(8, customer.getGender());
-            queryStatement.setString(9, customer.getWeight());
+//            queryStatement.setInt(1, customer.getCustomerId());
+            queryStatement.setString(1, customer.getFirstName());
+            queryStatement.setString(2, customer.getLastName());
+            queryStatement.setString(3, customer.getEmail());
+            queryStatement.setString(4, customer.getPhoneNumber());
+            queryStatement.setString(5, customer.getPassword());
+            queryStatement.setString(6, customer.getUserName());
+            queryStatement.setString(7, customer.getGender());
+            queryStatement.setDouble(8, customer.getWeight());
+            queryStatement.setDouble(9, customer.getHeight());
             queryStatement.setString(10, customer.getDob());
-            queryStatement.setInt(11, customer.getMonthlyPlan());
-            queryStatement.setString(12, customer.getNicNumber());
-            queryStatement.setBoolean(13, false);
-            queryStatement.setString(14, customer.getPasswordSalt());
-            queryStatement.setString(15, customer.getAddress());
+            queryStatement.setInt(11, customer.getMembership());
+//            queryStatement.setString(12, customer.getNicNumber());
+            queryStatement.setBoolean(12, false);
+//            queryStatement.setString(14, customer.getPasswordSalt());
+            queryStatement.setString(13, customer.getAddress());
             queryStatement.executeUpdate();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Error! Could not run query: " + e);
-            return false;
         }
 
     }
@@ -75,17 +74,18 @@ public class DatabaseFunctions {
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    INSERT INTO transactions (id, created_date, amount, transaction_number, bank_name, account_owner_name, fk_customer_id, status)
-                    VALUE (?,?,?,?,?,?,?,?);""");
+                    INSERT INTO transactions (created_date, amount, p_method, account_owner_name, fk_customer_id, status)
+                    VALUE (?,?,?,?,?,?);""");
 
-            queryStatement.setInt(1, transaction.getTransactionId());
-            queryStatement.setDate(2, CustomDate.getCurrentDate());
-            queryStatement.setInt(3, transaction.getAmount());
-            queryStatement.setString(4, transaction.getTransactionNumber());
-            queryStatement.setString(5, transaction.getBankName());
-            queryStatement.setString(6, transaction.getAccountOwnerName());
-            queryStatement.setInt(7, transaction.getFkCustomerId());
-            queryStatement.setBoolean(8, transaction.isStatus());
+//            queryStatement.setInt(1, transaction.getTransactionId());
+            queryStatement.setDate(1, CustomDate.getCurrentDate());
+            queryStatement.setInt(2, transaction.getAmount());
+//            queryStatement.setString(4, transaction.getTransactionNumber());
+//            queryStatement.setString(5, transaction.getBankName());
+            queryStatement.setString(3, transaction.getPaymentMethod());
+            queryStatement.setString(4, transaction.getAccountOwnerName());
+            queryStatement.setInt(5, transaction.getFkCustomerId());
+            queryStatement.setBoolean(6, transaction.isStatus());
 
             queryStatement.executeUpdate();
             return true;
@@ -96,36 +96,34 @@ public class DatabaseFunctions {
         }
     }
 
-    public static boolean saveToDb(Employee employee) {
+    public static void saveToDb(Employee employee) {
 
         PreparedStatement queryStatement = null;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    INSERT INTO employees (id, first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, password, salt, access,email)
-                    VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?);""");
+                    INSERT INTO employees (first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, password, salt, access,email)
+                    VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?);""");
 
-            queryStatement.setInt(1, employee.getId());
-            queryStatement.setString(2, employee.getFirstName());
-            queryStatement.setString(3, employee.getLastName());
-            queryStatement.setString(4, employee.getDesignation());
-            queryStatement.setString(5, employee.getNicNumber());
-            queryStatement.setInt(6, employee.getSalary());
-            queryStatement.setString(7, employee.getGender());
-            queryStatement.setString(8, employee.getPhoneNumber());
-            queryStatement.setDate(9, CustomDate.getCurrentDate());
-            queryStatement.setString(10, employee.getUserName());
-            queryStatement.setString(11, employee.getPassword());
-            queryStatement.setString(12, employee.getSalt());
-            queryStatement.setInt(13, employee.getAccess());
-            queryStatement.setString(14, employee.getEmail());
+//            queryStatement.setInt(1, employee.getId());
+            queryStatement.setString(1, employee.getFirstName());
+            queryStatement.setString(2, employee.getLastName());
+            queryStatement.setString(3, employee.getDesignation());
+            queryStatement.setString(4, employee.getNicNumber());
+            queryStatement.setInt(5, employee.getSalary());
+            queryStatement.setString(6, employee.getGender());
+            queryStatement.setString(7, employee.getPhoneNumber());
+            queryStatement.setDate(8, CustomDate.getCurrentDate());
+            queryStatement.setString(9, employee.getUserName());
+            queryStatement.setString(10, employee.getPassword());
+            queryStatement.setString(11, employee.getSalt());
+            queryStatement.setInt(12, employee.getAccess());
+            queryStatement.setString(13, employee.getEmail());
 
             queryStatement.executeUpdate();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Error! Could not run query: " + e);
-            return false;
         }
 
     }
@@ -408,13 +406,11 @@ public class DatabaseFunctions {
         PreparedStatement queryStatement;
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
-                    """);
+            queryStatement = dbConnection.prepareStatement("SELECT * FROM customers");
             allDataRs = queryStatement.executeQuery();
 
         } catch (SQLException e) {
-            System.out.println("Error in getting ids: " + e);
+            System.out.println("Error in getting customers: " + e);
         }
 
         return allDataRs;
@@ -433,9 +429,9 @@ public class DatabaseFunctions {
 
         try {
             queryStatement = dbConnection.prepareStatement("""
-                    SELECT monthly_plan
+                    SELECT membership
                     FROM customers
-                    ORDER BY monthly_plan ASC;
+                    ORDER BY membership ASC;
                     """);
 
             resultSet = queryStatement.executeQuery();
@@ -494,7 +490,7 @@ public class DatabaseFunctions {
             allDataRs = queryStatement.executeQuery();
 
         } catch (SQLException e) {
-            System.out.println("Error in getting ids: " + e);
+            System.out.println("Error in getting employees: " + e);
         }
         return allDataRs;
     }
@@ -617,91 +613,90 @@ public class DatabaseFunctions {
         return totalMonthlyExpense;
     }
 
-    public static ArrayList<String> getUserPassword(String customerUsernameEmail) {
+    public static String getAccountPassword(String customerUsernameEmail, String tableName) {
 
-        ArrayList<String> saltPassArray = new ArrayList<>();
+//        ArrayList<String> saltPassArray = new ArrayList<>();
+        String result = null;
 
         switch (Login.queryOption) {
             case "username" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE username = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM " + tableName + " WHERE username = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
                     while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                        result = resultSet.getString("password");
                     }
 
                 } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
+                    System.out.println("Error in retrieving password: " + e);
                 }
             }
 
             case "email" -> {
                 try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM customers WHERE email = ?");
+                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM " + tableName + " WHERE email = ?");
                     queryStatement.setString(1, customerUsernameEmail);
                     ResultSet resultSet = queryStatement.executeQuery();
 
                     while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
+                        result = resultSet.getString("password");
                     }
 
 
                 } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
+                    System.out.println("Error in retrieving password: " + e);
                 }
             }
         }
 
-        return saltPassArray;
+        return result;
 
     }
 
-    public static ArrayList<String> getEmployeePassword(String employeeUsernameEmail) {
-
-        ArrayList<String> saltPassArray = new ArrayList<>();
-
-        switch (Login.queryOption) {
-            case "username" -> {
-                try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE username = ?");
-                    queryStatement.setString(1, employeeUsernameEmail);
-                    ResultSet resultSet = queryStatement.executeQuery();
-
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
-                    }
-
-                } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
-                }
-            }
-
-            case "email" -> {
-                try {
-                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE email = ?");
-                    queryStatement.setString(1, employeeUsernameEmail);
-                    ResultSet resultSet = queryStatement.executeQuery();
-
-                    while (resultSet.next()) {
-                        saltPassArray.add(resultSet.getString("salt"));
-                        saltPassArray.add(resultSet.getString("password"));
-                    }
-
-
-                } catch (SQLException e) {
-                    System.out.println("Error in retrieving customer: " + e);
-                }
-            }
-        }
-
-        return saltPassArray;
-
-    }
+//    public static String getEmployeePassword(String employeeUsernameEmail) {
+//
+//        ArrayList<String> saltPassArray = new ArrayList<>();
+//
+//        switch (Login.queryOption) {
+//            case "username" -> {
+//                try {
+//                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE username = ?");
+//                    queryStatement.setString(1, employeeUsernameEmail);
+//                    ResultSet resultSet = queryStatement.executeQuery();
+//
+//                    while (resultSet.next()) {
+//                        saltPassArray.add(resultSet.getString("salt"));
+//                        saltPassArray.add(resultSet.getString("password"));
+//                    }
+//
+//                } catch (SQLException e) {
+//                    System.out.println("Error in retrieving customer: " + e);
+//                }
+//            }
+//
+//            case "email" -> {
+//                try {
+//                    PreparedStatement queryStatement = dbConnection.prepareStatement("SELECT * FROM employees WHERE email = ?");
+//                    queryStatement.setString(1, employeeUsernameEmail);
+//                    ResultSet resultSet = queryStatement.executeQuery();
+//
+//                    while (resultSet.next()) {
+//                        saltPassArray.add(resultSet.getString("salt"));
+//                        saltPassArray.add(resultSet.getString("password"));
+//                    }
+//
+//
+//                } catch (SQLException e) {
+//                    System.out.println("Error in retrieving customer: " + e);
+//                }
+//            }
+//        }
+//
+//        return saltPassArray;
+//
+//    }
 
     public static ArrayList<String> getAllUsernames() {
 
@@ -820,7 +815,7 @@ public class DatabaseFunctions {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                        SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
+                        SELECT * FROM customers
                         WHERE email = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
@@ -835,23 +830,24 @@ public class DatabaseFunctions {
                     CustomerPanel_Controller.Customer.setPhoneNumber(allDataRs.getString("phone_number"));
                     CustomerPanel_Controller.Customer.setUserName(allDataRs.getString("username"));
                     CustomerPanel_Controller.Customer.setGender(allDataRs.getString("gender"));
-                    CustomerPanel_Controller.Customer.setWeight(allDataRs.getString("weight"));
+                    CustomerPanel_Controller.Customer.setWeight(allDataRs.getDouble("weight"));
+                    CustomerPanel_Controller.Customer.setHeight(allDataRs.getDouble("height"));
                     CustomerPanel_Controller.Customer.setDob(allDataRs.getString("dob"));
-                    CustomerPanel_Controller.Customer.setMonthlyPlan(allDataRs.getInt("monthly_plan"));
-                    CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
+                    CustomerPanel_Controller.Customer.setMembership(allDataRs.getInt("membership"));
+//                    CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
                     CustomerPanel_Controller.Customer.setAddress(allDataRs.getString("address"));
 
                 }
 
             } catch (SQLException e) {
-                System.out.println("Error in getting ids: " + e);
+                System.out.println("Error in logged in customer: " + e);
             }
 
         } else if (Login.queryOption.equals("username")) {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                        SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
+                        SELECT * FROM customers
                         WHERE username = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
@@ -866,10 +862,11 @@ public class DatabaseFunctions {
                     CustomerPanel_Controller.Customer.setPhoneNumber(allDataRs.getString("phone_number"));
                     CustomerPanel_Controller.Customer.setUserName(allDataRs.getString("username"));
                     CustomerPanel_Controller.Customer.setGender(allDataRs.getString("gender"));
-                    CustomerPanel_Controller.Customer.setWeight(allDataRs.getString("weight"));
+                    CustomerPanel_Controller.Customer.setWeight(allDataRs.getDouble("weight"));
+                    CustomerPanel_Controller.Customer.setHeight(allDataRs.getDouble("height"));
                     CustomerPanel_Controller.Customer.setDob(allDataRs.getString("dob"));
-                    CustomerPanel_Controller.Customer.setMonthlyPlan(allDataRs.getInt("monthly_plan"));
-                    CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
+                    CustomerPanel_Controller.Customer.setMembership(allDataRs.getInt("membership"));
+                    // CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
                     CustomerPanel_Controller.Customer.setAddress(allDataRs.getString("address"));
 
                 }
@@ -890,7 +887,7 @@ public class DatabaseFunctions {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                    SELECT id, first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, access, email FROM employees
+                    SELECT * FROM employees
                     WHERE email = ?;""");
 
                 queryStatement.setString(1, usernameEmail);
@@ -919,7 +916,7 @@ public class DatabaseFunctions {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                        SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, monthly_plan, nic, is_active, address FROM customers
+                        SELECT id, first_name, last_name, email, phone_number, username, gender, weight, dob, membership, nic, is_active, address FROM customers
                         WHERE username = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
@@ -975,10 +972,7 @@ public class DatabaseFunctions {
         PreparedStatement queryStatement = null;
 
         try {
-            queryStatement = dbConnection.prepareStatement("""
-                    CALL get_ids(?)
-                    """);
-            queryStatement.setString(1, choice);
+            queryStatement = dbConnection.prepareStatement("SELECT * FROM " + choice);
             allIds = queryStatement.executeQuery();
             while (allIds.next()) {
                 lastId = allIds.getInt(1);

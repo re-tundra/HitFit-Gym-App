@@ -14,7 +14,8 @@ public class Customer extends Person implements Comparable {
 
     private String address;
     private String dob;
-    private String weight;
+    private Double weight;
+    private Double height;
     private int monthlyPlan;
     private Package monthlyPackage;
     private int customerId;
@@ -61,7 +62,7 @@ public class Customer extends Person implements Comparable {
         this.actionBtn = customMenuButton;
         this.actionBtn.setStyle("-fx-background-color: #00C2FF; -fx-background-radius: 12px;");
         this.actionBtn.setTextFill(Paint.valueOf("White"));
-        if (this.AdminAcces == true) {
+        if (this.AdminAcces) {
             actionBtn.getItems().addAll(item1, item2);
         } else {
             actionBtn.getItems().addAll(item1);
@@ -71,6 +72,7 @@ public class Customer extends Person implements Comparable {
         {
             MembersDetailCard_Controller.FullName = actionBtn.getFullName();
             MembersDetailCard_Controller.Weight = actionBtn.getWeight();
+            MembersDetailCard_Controller.Height = actionBtn.getHeight();
             MembersDetailCard_Controller.Address = actionBtn.getAddress();
             MembersDetailCard_Controller.Emails = actionBtn.getEmail();
             MembersDetailCard_Controller.Username = actionBtn.getUsername();
@@ -102,11 +104,26 @@ public class Customer extends Person implements Comparable {
         Id = id;
     }
 
-    public Customer(String firstName, String lastName, String email, String gender, String phoneNumber, String userName, String password, String nicNumber, String address, String dob, String weight, int monthlyPlan, int customerId, String passwordSalt) {
+    public Customer(String firstName,
+                    String lastName,
+                    String email,
+                    String gender,
+                    String phoneNumber,
+                    String userName,
+                    String password,
+                    String nicNumber,
+                    String address,
+                    String dob,
+                    Double weight,
+                    Double height,
+                    int monthlyPlan,
+                    int customerId,
+                    String passwordSalt) {
         super(firstName, lastName, email, gender, phoneNumber, userName, password, nicNumber);
         this.address = address;
         this.dob = dob;
         this.weight = weight;
+        this.height = height;
         this.monthlyPlan = monthlyPlan;
         this.customerId = customerId;
         this.passwordSalt = passwordSalt;
@@ -140,19 +157,27 @@ public class Customer extends Person implements Comparable {
         this.dob = dob;
     }
 
-    public String getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 
-    public int getMonthlyPlan() {
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public int getMembership() {
         return monthlyPlan;
     }
 
-    public void setMonthlyPlan(int monthlyPlan) {
+    public void setMembership(int monthlyPlan) {
         this.monthlyPlan = monthlyPlan;
     }
 

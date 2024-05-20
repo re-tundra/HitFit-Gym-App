@@ -52,15 +52,12 @@ public class LoadingScreen_Controller implements Initializable {
 
                     String username = prop.getProperty("Username");
                     String password = prop.getProperty("password");
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                new LogIn_Form_Controller().login(username, password);
-                                loadingStage.getScene().getWindow().hide();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                    Platform.runLater(() -> {
+                        try {
+                            new LogIn_Form_Controller().login(username, password);
+                            loadingStage.getScene().getWindow().hide();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
                     });
                 } else {
@@ -72,7 +69,7 @@ public class LoadingScreen_Controller implements Initializable {
                             throw new RuntimeException(e);
                         }
                         stage.setScene(scene);
-                        stage.initStyle(StageStyle.UNDECORATED);
+                        stage.initStyle(StageStyle.DECORATED);
                         stage.show();
                         loadingStage.getScene().getWindow().hide();
                     });

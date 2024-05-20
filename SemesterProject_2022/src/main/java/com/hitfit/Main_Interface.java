@@ -18,21 +18,17 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Main_Interface implements Initializable {
-    @FXML
-    private StackPane stackPane;
-    @FXML
-    private Button closeBtn;
+    private final int panels_count = 4;
+    private final int dashboard_idx = 3;
 
     @FXML
-    private Button maxBtn;
+    private StackPane stackPane;
+
     @FXML
     private Button logout;
 
     @FXML
     private AnchorPane navPanel;
-
-    @FXML
-    private Button restoreBtn;
 
     @FXML
     private Text Username;
@@ -53,25 +49,6 @@ public class Main_Interface implements Initializable {
     ArrayList<Changefxml> panels = new ArrayList<>();
 
     /*--ChangeFXML class objects bock ends here--*/
-
-    /*--Windows Border Logic--*/
-
-    @FXML
-    void close() {
-        new GeneralFunctions().close(closeBtn);
-    }
-
-    @FXML
-    void max() {
-        new GeneralFunctions().maxmin(maxBtn);
-    }
-
-    @FXML
-    void restore() {
-        new GeneralFunctions().restoring(restoreBtn);
-    }
-
-    /*--End--*/
     @FXML
     void menuBar()  {
 
@@ -95,8 +72,7 @@ public class Main_Interface implements Initializable {
             stackPane.setTranslateX(-200);
             navPanel.setTranslateX(-186);
             Menu_Counter=1;
-        } else if(Menu_Counter==1)
-        {
+        } else if(Menu_Counter==1) {
             TranslateTransition translateTransition = new TranslateTransition();
             translateTransition.setDuration(Duration.millis(400));
             translateTransition.setNode(navPanel);
@@ -115,7 +91,7 @@ public class Main_Interface implements Initializable {
             translateTransition2.setNode(dashboardPanel_controller.scrollpanedashboard);
             translateTransition2.setToX(-100);
 
-            stackPane.setTranslateX(0);
+            stackPane.setTranslateX(5);
             navPanel.setTranslateX(0);
             dashboardPanel_controller.scrollpanedashboard.setTranslateX(0);
 
@@ -145,26 +121,26 @@ public class Main_Interface implements Initializable {
 
         /*--Adding to Arraylist of panels--*/
         panels.add(0, accountSettingsPanel);
-        panels.add(1,membersPanel);
+        panels.add(1, membersPanel);
         panels.add(2, membershipsPanel);
-        panels.add(3, equipmentsPanel);
-        panels.add(4, employeesPanel);
-        panels.add(5, revenuePanel);
-        panels.add(6, enquiriesPanel);
-        panels.add(7,dashboardPanel);
-        panels.add(8,revenueTablePanel);
+//        panels.add(3, equipmentsPanel);
+//        panels.add(3, employeesPanel);
+//        panels.add(3, revenuePanel);
+//        panels.add(5, enquiriesPanel);
+        panels.add(3, dashboardPanel);
+//        panels.add(5, revenueTablePanel);
         /*--Adding Ends here--*/
 
         /*--Adding FXML stored in panes to Children of stack pane--*/
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             stackPane.getChildren().add(i,panels.get(i).pane);
         }
         /*--Adding of Children end here--*/
 
         /*--Initially only the Dashboard will be displayed so, turning the visibility of other panes off--*/
-        for(int i=0; i<9;i++) {
-            if (i != 7) {
+        for(int i=0; i<panels_count;i++) {
+            if (i != dashboard_idx) {
                 stackPane.getChildren().get(i).setVisible(false);
             }
         }
@@ -190,7 +166,7 @@ public class Main_Interface implements Initializable {
     /*---All the menu button actions are handled here---*/
     @FXML
     void AccountSettingsBtn() {
-        for(int i= 1; i<9;i++)
+        for(int i= 1; i<panels_count;i++)
         {
             stackPane.getChildren().get(i).setVisible(false);
         }
@@ -206,19 +182,19 @@ public class Main_Interface implements Initializable {
     @FXML
     void DashboardBtn() {
 
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
-            if(i!=7)
-            stackPane.getChildren().get(i).setVisible(false);
+            if (i != dashboard_idx)
+                stackPane.getChildren().get(i).setVisible(false);
         }
-        stackPane.getChildren().get(7).setVisible(true);
+        stackPane.getChildren().get(dashboard_idx).setVisible(true);
         new animatefx.animation.FadeIn(stackPane).play();
     }
 
     @FXML
     void EmployeesBtn() {
 
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=4)
             {
@@ -231,7 +207,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     void EquipmentsBtn() {
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=3)
             {
@@ -244,7 +220,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     void MembersBtn() {
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=1)
             {
@@ -257,7 +233,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     void MembershipsBtn() {
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=2)
             {
@@ -270,7 +246,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     void QueriesBtn() {
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=6)
             {
@@ -283,7 +259,7 @@ public class Main_Interface implements Initializable {
 
     @FXML
     void RevenueBtn() {
-        for(int i=0; i<9;i++)
+        for(int i=0; i<panels_count;i++)
         {
             if(i!=5)
             {

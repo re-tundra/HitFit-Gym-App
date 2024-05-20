@@ -44,17 +44,9 @@ public class Login {
         return true;
     }
 
-    public void checkPassword() {
-
-        if (Password.verifyPassword(emailUsername, password)) {
-            logInSuccessful = true;
-        }
-
-    }
-
     public boolean userLoggedInStatus() {
 
-        checkPassword();
+        logInSuccessful = Password.verifyPassword(emailUsername, password);
 
         if (logInSuccessful) {
             System.out.println("User logged in successfully");
@@ -86,5 +78,9 @@ public class Login {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void getCustomer() {
+
     }
 }

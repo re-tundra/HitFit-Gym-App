@@ -190,7 +190,18 @@ public class TransactionsPanel_Controller implements Initializable {
 
 
             while (resultSet.next()) {
-                TransactionsList.add(new Transaction(resultSet.getBoolean(8),resultSet.getInt(1),resultSet.getDate(2), resultSet.getInt(3),resultSet.getString(5),resultSet.getString(6), new CustomMenuButton("Action",resultSet.getInt(1))));
+                TransactionsList.add(
+                    new Transaction(
+                        resultSet.getBoolean(8),
+                        resultSet.getInt(1),
+                        resultSet.getDate(2),
+                        resultSet.getInt(3),
+                        "",
+                        resultSet.getString(6),
+                        new CustomMenuButton("Action", resultSet.getInt(1)),
+                        resultSet.getString(4)
+                    )
+                );
 
                 transactionView.setItems(TransactionsList);
             }

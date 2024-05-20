@@ -113,7 +113,7 @@ public class MembersPanel_Controller implements Initializable {
             } else if(String.valueOf(customer.getId()).indexOf(searchkeyword) > -1)
             {
                 return true;
-            } else if((String.valueOf(customer.getMonthlyPlan()).toLowerCase().indexOf(searchkeyword) > -1))
+            } else if((String.valueOf(customer.getMembership()).toLowerCase().indexOf(searchkeyword) > -1))
             {
                 return true;
             }  else if (customer.getEmail().toLowerCase().indexOf(searchkeyword) > -1)
@@ -203,7 +203,23 @@ public class MembersPanel_Controller implements Initializable {
 
 
              while (resultSet.next()) {
-                 memberslist.add(new Customer(true,resultSet.getInt("id"),resultSet.getString("first_name"), resultSet.getString("last_name"), resultSet.getString("email"), resultSet.getString("phone_number"), resultSet.getString("nic"), Integer.parseInt(resultSet.getString("monthly_plan")), new CustomMenuButton(resultSet.getInt("id"), "Action", resultSet.getString("first_name")+" "+resultSet.getString("last_name"),resultSet.getString("weight"),"XYZ",resultSet.getString("email"),resultSet.getString("username"),resultSet.getString("monthly_plan"))));
+                 memberslist.add(new Customer(true,
+                         resultSet.getInt("id"),
+                         resultSet.getString("first_name"),
+                         resultSet.getString("last_name"),
+                         resultSet.getString("email"),
+                         resultSet.getString("phone_number"),
+                         resultSet.getString("nic"),
+                         Integer.parseInt(resultSet.getString("membership")),
+                         new CustomMenuButton(resultSet.getInt("id"),
+                                 "Action",
+                                 resultSet.getString("first_name")+" "+resultSet.getString("last_name"),
+                                 resultSet.getDouble("weight"),
+                                 resultSet.getDouble("height"),
+                                 "XYZ",
+                                 resultSet.getString("email"),
+                                 resultSet.getString("username"),
+                                 resultSet.getString("membership"))));
 
                  membersView.setItems(memberslist);
              }

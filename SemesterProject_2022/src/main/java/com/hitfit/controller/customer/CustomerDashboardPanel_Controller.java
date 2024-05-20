@@ -39,16 +39,16 @@ public class CustomerDashboardPanel_Controller implements Initializable {
 
     @FXML
     void CompletedBtn(ActionEvent event) {
-        QueriesStckPane.getChildren().get(0).setVisible(true);
-        QueriesStckPane.getChildren().get(1).setVisible(false);
-        new animatefx.animation.FadeIn(QueriesStckPane).play();
+//        QueriesStckPane.getChildren().get(0).setVisible(true);
+//        QueriesStckPane.getChildren().get(1).setVisible(false);
+//        new animatefx.animation.FadeIn(QueriesStckPane).play();
     }
 
     @FXML
     void PendingBtn(ActionEvent event) {
-        QueriesStckPane.getChildren().get(0).setVisible(false);
-        QueriesStckPane.getChildren().get(1).setVisible(true);
-        new animatefx.animation.FadeIn(QueriesStckPane).play();
+//        QueriesStckPane.getChildren().get(0).setVisible(false);
+//        QueriesStckPane.getChildren().get(1).setVisible(true);
+//        new animatefx.animation.FadeIn(QueriesStckPane).play();
     }
 
     @FXML
@@ -58,8 +58,7 @@ public class CustomerDashboardPanel_Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        QueriesStckPane.getChildren().get(0).setVisible(true);
-        QueriesStckPane.getChildren().get(1).setVisible(false);
+//        QueriesStckPane.getChildren().get(0).setVisible(true);
+//        QueriesStckPane.getChildren().get(1).setVisible(false);
     }
 }

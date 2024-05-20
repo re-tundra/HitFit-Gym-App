@@ -5,8 +5,8 @@ import javafx.scene.control.MenuButton;
 public class CustomMenuButton extends MenuButton {
 
     private int ButtonId;
-    private String FullName,weight,Address,Email,Username,PackageType,PackagePrice,designation,gender,phone;
-    private double salary;
+    private String FullName,Address,Email,Username,PackageType,PackagePrice,designation,gender,phone;
+    private double salary, weight,cHeight;
 
     // *FOR TRANSACTIONS
 
@@ -77,12 +77,19 @@ public class CustomMenuButton extends MenuButton {
         FullName = fullName;
     }
 
-    public String getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(String weight) {
+    public Double getCHeight() {
+        return cHeight;
+    }
+
+    public void setWeight(Double weight) {
         this.weight = weight;
+    }
+    public void setCHeight(Double height) {
+        this.cHeight = height;
     }
 
     public String getAddress() {
@@ -126,27 +133,30 @@ public class CustomMenuButton extends MenuButton {
     }
 
     // constructor for Members
-    public CustomMenuButton(int ButtonId, String s, String fullName, String weight, String address, String email, String username,String packagePrice) {
+    public CustomMenuButton(int ButtonId,
+                            String s,
+                            String fullName,
+                            Double weight,
+                            Double height,
+                            String address,
+                            String email,
+                            String username,
+                            String packagePrice) {
         super(s);
         FullName = fullName;
         this.ButtonId=ButtonId;
         this.weight = weight;
+        this.cHeight = height;
         Address = address;
         Email = email;
         Username = username;
         PackagePrice = packagePrice;
-        if(Integer.parseInt(PackagePrice)==2000)
-        {
-            PackageType = "Beginner";
-        } else if(Integer.parseInt(PackagePrice)==3000)
-        {
-            PackageType = "Starter";
-        } else if(Integer.parseInt(PackagePrice)==4500)
-        {
-            PackageType = "Pro";
-        } else
-        {
-            PackageType = "nil";
+
+        switch (Integer.parseInt(PackagePrice)) {
+            case 2000 -> PackageType = "Beginner";
+            case 3000 -> PackageType = "Starter";
+            case 4500 -> PackageType = "Pro";
+            default -> PackageType = "nil";
         }
     }
 }

@@ -39,7 +39,7 @@ public class GeneralFunctions {
         scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.centerOnScreen();
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.DECORATED);
         stage.show();
     }
     public void switchSceneModality(String fxml) throws IOException {

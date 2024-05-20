@@ -63,9 +63,6 @@ public class DashboardPanel_Controller implements Initializable {
     private Text monthlyRevenue;
 
     @FXML
-    private Text monthlyprofit;
-
-    @FXML
     private Text pendingPayments;
 
     @FXML
@@ -78,10 +75,10 @@ public class DashboardPanel_Controller implements Initializable {
     private StackPane querystckpane;
 
     @FXML
-    private LineChart<?,?> monthlyProfitChart;
+    private LineChart<String, Integer> monthlyProfitChart;
 
     @FXML
-    private BarChart<?,? > monthlyExpenseChart;
+    private BarChart<String, Integer> monthlyExpenseChart;
     @FXML
     private Text totalMembers;
     private int noOfCustomers;
@@ -193,10 +190,6 @@ public class DashboardPanel_Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TODO Get sum of All packages of one month and set here
         monthlyRevenue.setText("1000");
-        //TODO Get sum of All expenses of one month and set here
-        monthlyExpense.setText("1000");
-        //TODO Difference of monthly packages and monthly expense will be set here
-        monthlyprofit.setText("20000");
 
 
         /*--Members card--*/
@@ -207,24 +200,10 @@ public class DashboardPanel_Controller implements Initializable {
         /*--End--*/
 
 
-        XYChart.Series series = new XYChart.Series<>();
-        series.setName("Monthly Profit in Rupees");
-        series.getData().add(new XYChart.Data<>("1", 2000));
-        series.getData().add(new XYChart.Data<>("2", 40000));
-        series.getData().add(new XYChart.Data<>("3", 60000));
-        series.getData().add(new XYChart.Data<>("4", 80000));
-        series.getData().add(new XYChart.Data<>("5", 100000));
-        series.getData().add(new XYChart.Data<>("6", 100000));
-        series.getData().add(new XYChart.Data<>("7", 100000));
-        series.getData().add(new XYChart.Data<>("8", 100000));
-        series.getData().add(new XYChart.Data<>("9", 100000));
-        series.getData().add(new XYChart.Data<>("10", 100000));
-        series.getData().add(new XYChart.Data<>("11", 100000));
-        series.getData().add(new XYChart.Data<>("12", 100000));
-
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
         monthlyProfitChart.getData().add(series);
 
-        XYChart.Series series1 = new XYChart.Series<>();
+        XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
         series1.setName("Monthly Expense in Rupees");
         series1.getData().add(new XYChart.Data<>("1", 2000));
         series1.getData().add(new XYChart.Data<>("2", 40000));

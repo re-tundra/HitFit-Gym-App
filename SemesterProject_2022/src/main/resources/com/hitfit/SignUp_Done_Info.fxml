@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="600.0" prefWidth="1024.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.SignUp_Controller">
+<AnchorPane fx:id="Main" onMouseDragged="#dragWindow" onMousePressed="#pressedWindow" prefHeight="600.0" prefWidth="1024.0" stylesheets="@CSS/SignUp.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.SignUp_Controller">
     <children>
         <HBox id="hbox" fx:id="hbox" layoutX="403.0" layoutY="568.0" prefHeight="37.0" prefWidth="620.0">
             <children>
@@ -61,15 +61,6 @@
                     <font>
                         <Font size="14.0" />
                     </font></Text>
-                <Button fx:id="exit" layoutX="561.0" layoutY="14.0" minWidth="43.0" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: transparent;">
-                    <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@Images/icons8-close-window-96.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
             <Line endX="125.3333740234375" layoutX="237.0" layoutY="157.0" startX="-157.33334350585938" stroke="#009ffd" strokeWidth="3.0" />
             <ImageView fitHeight="81.0" fitWidth="82.0" layoutX="78.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -77,11 +68,6 @@
                </image>
             </ImageView>
             <Text fill="WHITE" layoutX="79.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thank you for signing up and filling in all the details." wrappingWidth="359.6666259765625">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="78.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your account will be created once your information will be verified and you will be notified with in 1 working day." wrappingWidth="414.33331298828125">
                <font>
                   <Font size="14.0" />
                </font>

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import com.hitfit.model_class.Customer;
 
@@ -22,9 +23,12 @@ import java.util.ResourceBundle;
 public class CustomerPanel_Controller implements Initializable {
 
     public static Customer Customer = new Customer();
+    private final int navItemCount = 3;
 
     @FXML
     private StackPane stackPane;
+    @FXML
+    private Text CustomerName;
     @FXML
     private Button closeBtn;
 
@@ -129,6 +133,8 @@ public class CustomerPanel_Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(Customer);
+        CustomerName.setText(Customer.getFirstName());
 
         // created  a class named change fxml and called its function which loads up a new fxml file and makes it the children of stack pane
         dashboardPanel.getfxml("CustomerDashboardPanel.fxml");
@@ -141,22 +147,22 @@ public class CustomerPanel_Controller implements Initializable {
 
         /*--Adding to Arraylist of panels--*/
         panels.add(0, accountSettingsPanel);
-        panels.add(1,BMIViewPanel);
-        panels.add(2, QueriesFormPanel);
-        panels.add(3, equipmentsPanel);
-        panels.add(4, FAQPanel);
-        panels.add(5,dashboardPanel);
+//        panels.add(1,BMIViewPanel);
+//        panels.add(2, QueriesFormPanel);
+//        panels.add(3, equipmentsPanel);
+        panels.add(1, FAQPanel);
+        panels.add(2,dashboardPanel);
         /*--Adding Ends here--*/
 
         /*--Adding FXML stored in panes to Children of stack pane--*/
-        for(int i=0; i<6;i++)
+        for(int i=0; i<navItemCount;i++)
         {
             stackPane.getChildren().add(i,panels.get(i).pane);
         }
         /*--Adding of Children end here--*/
 
         /*--Initially only the Dashboard will be displayed so, turning the visibility of other panes off--*/
-        for(int i=0; i<5;i++)
+        for(int i=0; i<navItemCount-1;i++)
         {
             stackPane.getChildren().get(i).setVisible(false);
         }
@@ -194,7 +200,7 @@ public class CustomerPanel_Controller implements Initializable {
     @FXML
     void AccountSettingsBtn() {
         stackPane.getChildren().get(0).setVisible(true);
-        for(int i=1;i<6;i++)
+        for(int i=1;i<navItemCount;i++)
         {
             stackPane.getChildren().get(i).setVisible(false);
         }
@@ -203,9 +209,8 @@ public class CustomerPanel_Controller implements Initializable {
 
     @FXML
     void DashboardBtn() {
-
-        stackPane.getChildren().get(5).setVisible(true);
-        for(int i=0;i<5;i++)
+        stackPane.getChildren().get(2).setVisible(true);
+        for(int i=0;i<navItemCount-1;i++)
         {
                 stackPane.getChildren().get(i).setVisible(false);
         }
@@ -216,7 +221,7 @@ public class CustomerPanel_Controller implements Initializable {
     void BMIBtn() {
 
         stackPane.getChildren().get(1).setVisible(true);
-        for(int i=0;i<6;i++)
+        for(int i=0;i<navItemCount;i++)
         {
             if(i!=1)
             {
@@ -230,7 +235,7 @@ public class CustomerPanel_Controller implements Initializable {
     void EquipmentsBtn() {
         stackPane.getChildren().get(3).setVisible(true);
 
-        for(int i=0; i<6;i++)
+        for(int i=0; i<navItemCount;i++)
         {
             if(i!=3)
             {
@@ -242,11 +247,11 @@ public class CustomerPanel_Controller implements Initializable {
 
     @FXML
     void FaqBtn() {
-        stackPane.getChildren().get(4).setVisible(true);
+        stackPane.getChildren().get(1).setVisible(true);
 
-        for(int i=0; i<6;i++)
+        for(int i=0; i<navItemCount;i++)
         {
-            if(i!=4)
+            if(i!=1)
             {
                 stackPane.getChildren().get(i).setVisible(false);
             }
@@ -257,7 +262,7 @@ public class CustomerPanel_Controller implements Initializable {
     @FXML
     void QueriesBtn() {
         stackPane.getChildren().get(2).setVisible(true);
-        for(int i = 0; i<6; i++)
+        for(int i = 0; i<navItemCount; i++)
         {
             if(i!=2)
             {

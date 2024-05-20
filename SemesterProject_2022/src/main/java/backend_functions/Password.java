@@ -39,29 +39,21 @@ public class Password {
     }
 
     public static boolean verifyPassword(String customerUsernameEmail, String enteredPassword) {
-
         try {
-
-            String[] userSaltPassword = new String[2];
+            String passwordToMatch = null;
             int i = 0;
 
             if (isCustomerOrEmployee.equals("customer")){
-                for (String s : DatabaseFunctions.getUserPassword(customerUsernameEmail)) {
-                    userSaltPassword[i] = s;
-                    i++;
-                }
+                passwordToMatch = DatabaseFunctions.getAccountPassword(customerUsernameEmail, "customers");
             } else if (isCustomerOrEmployee.equals("employee")) {
-                for (String s : DatabaseFunctions.getEmployeePassword(customerUsernameEmail)) {
-                    userSaltPassword[i] = s;
-                    i++;
-                }
+                passwordToMatch = DatabaseFunctions.getAccountPassword(customerUsernameEmail, "employees");
             }
 
-            String changedPassword = DigestUtils.sha3_256Hex(enteredPassword);
+//            String changedPassword = DigestUtils.sha3_256Hex(enteredPassword);
 
-            changedPassword = changedPassword + userSaltPassword[0];
+//            changedPassword = changedPassword + userSaltPassword[0];
 
-            if (changedPassword.equals(userSaltPassword[1])) {
+            if (enteredPassword.equals(passwordToMatch)) {
                 System.out.println("Access granted.");
                 return true;
             } else {
@@ -70,7 +62,7 @@ public class Password {
             }
 
         } catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return false;
     }

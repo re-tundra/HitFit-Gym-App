@@ -19,7 +19,8 @@ public class MembersDetailCard_Controller implements Initializable {
     private double x=0;
     private double y=0;
     /* Non FXML fields */
-    public static String FullName, Weight, Address, Emails, Username, PackageType, PackagePrice;
+    public static String FullName, Address, Emails, Username, PackageType, PackagePrice;
+    public static Double Weight, Height;
 
     @FXML
     private Text address;
@@ -46,6 +47,9 @@ public class MembersDetailCard_Controller implements Initializable {
     private Text weight;
 
     @FXML
+    private Text height;
+
+    @FXML
     private AnchorPane Main;
     @FXML
     void closebtn(ActionEvent event) {
@@ -69,7 +73,8 @@ public class MembersDetailCard_Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         fullName.setText(FullName);
-        weight.setText(Weight);
+        weight.setText(Weight.toString());
+        height.setText(Height.toString());
         address.setText(Address);
         email.setText(Emails);
         username.setText(Username);

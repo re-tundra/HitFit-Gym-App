@@ -17,7 +17,7 @@
 
 <!--suppress ALL -->
 
-<AnchorPane fx:id="anchorpane_login" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="417.0" prefWidth="658.0" stylesheets="@CSS/Login.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.LogIn_Form_Controller">
+<AnchorPane fx:id="anchorpane_login" onMouseDragged="#dragged" onMousePressed="#pressed" prefHeight="417.0" prefWidth="658.0" stylesheets="@CSS/Login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hitfit.controller.initial_screen.LogIn_Form_Controller">
    <children>
       <ImageView fitHeight="433.0" fitWidth="313.0" layoutX="355.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -80,12 +80,6 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Text>
-      <Text fill="#b5b5b5" layoutX="46.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign In with your Email / Username and Password" wrappingWidth="279.4110107421875">
-         <font>
-            <Font name="Arial" size="12.0" />
-         </font>
-      </Text>
-      <Rectangle arcHeight="2.0" arcWidth="5.0" fill="#009ffd" height="2.0" layoutX="45.0" layoutY="126.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="267.0" />
       <Text fill="#b5b5b5" layoutX="54.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email or Username" wrappingWidth="103.07769775390625">
          <font>
             <Font name="Arial" size="10.0" />
@@ -98,20 +92,7 @@
          </font>
       </Text>
       <PasswordField fx:id="PassField" layoutX="46.0" layoutY="224.0" onMouseClicked="#clear" prefHeight="25.0" prefWidth="251.0" />
-      <CheckBox fx:id="response" layoutX="54.0" layoutY="322.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="167.0" text="Keep Me Logged In" textFill="#c3c3c3">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </CheckBox>
       <Button fx:id="LogInButton" layoutX="46.0" layoutY="272.0" mnemonicParsing="false" onMouseClicked="#loginBtn" prefHeight="25.0" prefWidth="251.0" text="Log In" />
-      <Button fx:id="exit" layoutX="619.0" layoutY="14.0" minWidth="28.0" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="28.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/icons8-close-window-96.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
       <Label fx:id="epValidation" layoutX="63.0" layoutY="166.0" onMouseClicked="#clear">
          <font>
             <Font name="System Italic" size="8.0" />
@@ -131,15 +112,6 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text fill="#b5b5b5" layoutX="54.0" layoutY="385.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Can't Sign In? Forgot Password ?" wrappingWidth="187.07769775390625">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Text>
-      <Button fx:id="resetPassword" layoutX="237.0" layoutY="371.0" mnemonicParsing="false" onAction="#resetPassword" style="-fx-background-color: transparent;" text="Reset Password" textFill="#007bff">
-         <font>
-            <Font size="8.0" />
-         </font>
-      </Button>
+      <CheckBox fx:id="response" layoutX="46.0" layoutY="333.0" mnemonicParsing="false" text="Keep me signed in" textFill="WHITE" />
    </children>
 </AnchorPane>
