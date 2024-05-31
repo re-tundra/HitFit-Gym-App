@@ -6,14 +6,18 @@ import com.hitfit.controller.customer.CustomerPanel_Controller;
 import com.hitfit.controller.employees.EmployeesPanel_Controller;
 import com.hitfit.model_class.*;
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Properties;
 
 public class DatabaseFunctions {
 
-    private static final String dbUrl = "jdbc:mysql://localhost:3306/gym_database?useSSL=false";
-    private static final String dbUsername = "root";
-    private static final String dbPassword = "password";
+//    private static final String dbUrl = "jdbc:mysql://localhost:3306/gym_database?useSSL=false";
+    private static final String dbUrlFormat = "jdbc:sqlserver://localhost:1433;databaseName=%s;trustServerCertificate=true;encrypt=false";
+    private static final String NAME_KEY = "db_name";
+    private static final String USERNAME_KEY = "db_user";
+    private static final String PASSWORD_KEY = "db_password";
 
     private static Connection dbConnection = null;
 
@@ -28,11 +32,31 @@ public class DatabaseFunctions {
 
     public static boolean makeConnection() {
         try {
-            dbConnection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+            File dbPropFile = new File("db.properties");
+
+            if (dbPropFile.exists()) {
+                Properties prop = new Properties();
+                InputStream input = new FileInputStream("db.properties");
+                prop.load(input);
+
+                String dbUrl = String.format(dbUrlFormat, prop.getProperty(NAME_KEY));
+                String dbUsername = prop.getProperty(USERNAME_KEY);
+                String dbPassword = prop.getProperty(PASSWORD_KEY);
+
+                dbConnection = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
+                return true;
+            }
+
+            throw new FileNotFoundException();
         } catch (SQLException e) {
             System.out.println("Error! Could not connect to Db: " + e);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error! Could not connect to Db: No db.properties file found");
+        } catch (IOException e) {
+            System.out.println("Error! Could not connect to Db: Couldn't read db.properties file");
         }
-        return true;
+
+        return false;
     }
 
     public static void saveToDb(Customer customer) {
@@ -75,7 +99,7 @@ public class DatabaseFunctions {
         try {
             queryStatement = dbConnection.prepareStatement("""
                     INSERT INTO transactions (created_date, amount, p_method, account_owner_name, fk_customer_id, status)
-                    VALUE (?,?,?,?,?,?);""");
+                    VALUES (?,?,?,?,?,?);""");
 
 //            queryStatement.setInt(1, transaction.getTransactionId());
             queryStatement.setDate(1, CustomDate.getCurrentDate());
@@ -103,7 +127,7 @@ public class DatabaseFunctions {
         try {
             queryStatement = dbConnection.prepareStatement("""
                     INSERT INTO employees (first_name, last_name, designation, nic_number, salary, gender, phone_number, joining_date, username, password, salt, access,email)
-                    VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?);""");
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);""");
 
 //            queryStatement.setInt(1, employee.getId());
             queryStatement.setString(1, employee.getFirstName());
@@ -135,7 +159,7 @@ public class DatabaseFunctions {
         try {
             queryStatement = dbConnection.prepareStatement("""
                     INSERT INTO expenses (id, description,created_date, amount, month, year, fk_employee_id, selected_date)
-                    VALUE (?,?,?,?,?,?,?,?)
+                    VALUES (?,?,?,?,?,?,?,?)
                     """);
 
             queryStatement.setInt(1, expense.getId());
@@ -163,7 +187,7 @@ public class DatabaseFunctions {
         try {
             queryStatement = dbConnection.prepareStatement("""
                     INSERT INTO queries (id, heading, email, description, created_date, username)
-                    VALUE (?,?,?,?,?,?)""");
+                    VALUES (?,?,?,?,?,?)""");
 
             queryStatement.setInt(1, query.getId());
             queryStatement.setString(2, query.getHeading());
@@ -313,18 +337,18 @@ public class DatabaseFunctions {
 
     public static void updateTransactionStatus(int transactionId) {
 
-        PreparedStatement queryStatement = null;
-        PreparedStatement queryStatement2 = null;
+        PreparedStatement queryStatement;
+        PreparedStatement queryStatement2;
         int fkCustomerId = 0;
-        int transactionAmount = 0;
+//        int transactionAmount = 0;
 
         try {
             queryStatement = dbConnection.prepareStatement("""
                     UPDATE transactions
-                    SET status = true
-                    WHERE id = ?;""");
+                    SET status = 1
+                    WHERE id = ?;
+            """);
             queryStatement.setInt(1, transactionId);
-
             queryStatement.executeUpdate();
 
             try {
@@ -342,26 +366,27 @@ public class DatabaseFunctions {
 
             queryStatement2 = dbConnection.prepareStatement("""
                     UPDATE customers
-                    SET is_active = true
-                    WHERE id = ?;""");
+                    SET is_active = 1
+                    WHERE id = ?;
+            """);
 
             queryStatement2.setInt(1, fkCustomerId);
             queryStatement2.executeUpdate();
 
-            queryStatement = dbConnection.prepareStatement("""
-                    SELECT amount FROM transactions
-                    WHERE fk_customer_id = ?;
-                    """);
-            queryStatement.setInt(1, fkCustomerId);
-
-            ResultSet transactionAmountRs = queryStatement.executeQuery();
-
-            while (transactionAmountRs.next()) {
-                transactionAmount = transactionAmountRs.getInt(1);
-            }
-
-            Revenue revenue = new Revenue(DatabaseFunctions.generateId("revenues"), CustomDate.getCurrentMonth(), CustomDate.getCurrentYear(), transactionAmount);
-            DatabaseFunctions.saveUpdateToDb(revenue);
+//            queryStatement = dbConnection.prepareStatement("""
+//                    SELECT amount FROM transactions
+//                    WHERE fk_customer_id = ?;
+//            """);
+//            queryStatement.setInt(1, fkCustomerId);
+//
+//            ResultSet transactionAmountRs = queryStatement.executeQuery();
+//
+//            while (transactionAmountRs.next()) {
+//                transactionAmount = transactionAmountRs.getInt(1);
+//            }
+//
+//            Revenue revenue = new Revenue(DatabaseFunctions.generateId("revenues"), CustomDate.getCurrentMonth(), CustomDate.getCurrentYear(), transactionAmount);
+//            DatabaseFunctions.saveUpdateToDb(revenue);
 
         } catch (SQLException e) {
             System.out.println("Error! Could not run query: " + e);
@@ -401,7 +426,6 @@ public class DatabaseFunctions {
     }
 
     public static ResultSet getAllCustomers() {
-
         ResultSet allDataRs = null;
         PreparedStatement queryStatement;
 
@@ -414,6 +438,123 @@ public class DatabaseFunctions {
         }
 
         return allDataRs;
+    }
+
+    public static ArrayList<Customer> getRecentCustomers() {
+        ArrayList<Customer> result = new ArrayList<>();
+        PreparedStatement queryStatement;
+
+        try {
+            queryStatement = dbConnection.prepareStatement("SELECT * FROM RecentCustomers");
+            ResultSet allDataRs = queryStatement.executeQuery();
+
+            while (allDataRs.next()) {
+                result.add(
+                    new Customer(
+                        allDataRs.getString("first_name"),
+                        allDataRs.getString("last_name"),
+                        allDataRs.getString("email"),
+                        allDataRs.getString("gender"),
+                        allDataRs.getString("phoneNumber"),
+                        allDataRs.getString("userName"),
+                        allDataRs.getString("password"),
+                        "",
+                        allDataRs.getString("address"),
+                        allDataRs.getString("dob"),
+                        allDataRs.getDouble("weight"),
+                        allDataRs.getDouble("height"),
+                        allDataRs.getInt("membership"),
+                        allDataRs.getInt("id"),
+                        "",
+                        0.0
+                    )
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting customers: " + e);
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Customer> getOnDueCustomers() {
+        ArrayList<Customer> result = new ArrayList<>();
+        PreparedStatement queryStatement;
+
+        try {
+            queryStatement = dbConnection.prepareStatement("""
+                    SELECT * FROM OnDueCustomers
+                    WHERE remaining_days_to_next_month < 7 AND remaining_days_to_next_month > 0;
+                    """);
+            ResultSet allDataRs = queryStatement.executeQuery();
+
+            while (allDataRs.next()) {
+                result.add(
+                        new Customer(
+                                allDataRs.getString("first_name"),
+                                allDataRs.getString("last_name"),
+                                allDataRs.getString("email"),
+                                allDataRs.getString("gender"),
+                                allDataRs.getString("phoneNumber"),
+                                allDataRs.getString("userName"),
+                                allDataRs.getString("password"),
+                                "",
+                                allDataRs.getString("address"),
+                                allDataRs.getString("dob"),
+                                allDataRs.getDouble("weight"),
+                                allDataRs.getDouble("height"),
+                                allDataRs.getInt("membership"),
+                                allDataRs.getInt("id"),
+                                "",
+                                0.0
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting customers: " + e);
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Customer> getExpiredCustomers() {
+        ArrayList<Customer> result = new ArrayList<>();
+        PreparedStatement queryStatement;
+
+        try {
+            queryStatement = dbConnection.prepareStatement("""
+                    SELECT * FROM OnDueCustomers
+                    WHERE remaining_days_to_next_month <= 0;
+                    """);
+            ResultSet allDataRs = queryStatement.executeQuery();
+
+            while (allDataRs.next()) {
+                result.add(
+                        new Customer(
+                                allDataRs.getString("first_name"),
+                                allDataRs.getString("last_name"),
+                                allDataRs.getString("email"),
+                                allDataRs.getString("gender"),
+                                allDataRs.getString("phoneNumber"),
+                                allDataRs.getString("userName"),
+                                allDataRs.getString("password"),
+                                "",
+                                allDataRs.getString("address"),
+                                allDataRs.getString("dob"),
+                                allDataRs.getDouble("weight"),
+                                allDataRs.getDouble("height"),
+                                allDataRs.getInt("membership"),
+                                allDataRs.getInt("id"),
+                                "",
+                                0.0
+                        )
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting customers: " + e);
+        }
+
+        return result;
     }
 
     public static int[] getNumberOfMemberships() {
@@ -459,8 +600,56 @@ public class DatabaseFunctions {
         return allMemberships;
     }
 
-    public static ResultSet getQuery(String username) {
+    public static double getMonthlyRevenue(int month) {
+        double revenue = 0;
 
+        try {
+            PreparedStatement queryStatement = dbConnection.prepareStatement("""
+                    SELECT
+                        SUM(amount) AS total_month_revenue
+                    FROM transactions
+                    WHERE MONTH(created_date) = ?
+                      AND YEAR(created_date) = YEAR(GETDATE());
+                    """);
+
+            queryStatement.setInt(1, month);
+            ResultSet resultSet = queryStatement.executeQuery();
+            while (resultSet.next()) {
+                revenue = resultSet.getDouble("total_month_revenue");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting monthly revenue for month " + month + ": " + e);
+        }
+
+
+        return Math.max(0, revenue);
+    }
+
+    public static int getMonthlyNumberOfRegistrations(int month) {
+        int registrations = 0;
+
+        try {
+            PreparedStatement queryStatement = dbConnection.prepareStatement("""
+                    SELECT COUNT(DISTINCT(customer_id)) as total_monthly_registered
+                    FROM LatestTransactionOfCustomers
+                    WHERE MONTH(latest_transaction_date) = ?
+                        AND YEAR(latest_transaction_date) = YEAR(GETDATE());
+                    """);
+
+            queryStatement.setInt(1, month);
+            ResultSet resultSet = queryStatement.executeQuery();
+            while (resultSet.next()) {
+                registrations = resultSet.getInt("total_monthly_registered");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in getting monthly registrations for month " + month + ": " + e);
+        }
+
+
+        return Math.max(0, registrations);
+    }
+
+    public static ResultSet getQuery(String username) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
@@ -778,25 +967,64 @@ public class DatabaseFunctions {
         return allEmails;
     }
 
-    public static int getNumberOfCustomers() {
+    public static int[] getNumberOfCustomers() {
 
         PreparedStatement queryStatement = null;
         int allCustomers = 0;
+        int allActiveCustomers = 0;
 
         try {
-            queryStatement = dbConnection.prepareStatement("SELECT COUNT(id) FROM customers");
+            queryStatement = dbConnection.prepareStatement(
+            """
+                    SELECT
+                        COUNT(c1.id) AS total_customers,
+                        COUNT(c2.id) AS total_active_customers
+                    FROM customers c1
+                    LEFT JOIN customers c2 ON c1.id = c2.id AND c2.is_active = 1;
+                """
+            );
 
-            ResultSet customersRs = queryStatement.executeQuery();
+            ResultSet set = queryStatement.executeQuery();
 
-            while (customersRs.next()) {
-                allCustomers = customersRs.getInt(1);
+            while (set.next()) {
+                allCustomers = set.getInt(1);
+                allActiveCustomers = set.getInt(2);
             }
 
         } catch (SQLException e) {
             System.out.println("Error in getting number of customers: " + e);
         }
 
-        return allCustomers;
+        return new int[]{allCustomers, allActiveCustomers};
+    }
+
+    public static double getCurrentMonthRevenue() {
+        PreparedStatement queryStatement = null;
+        double revenue = 0;
+
+        try {
+            queryStatement = dbConnection.prepareStatement(
+            """
+                    SELECT
+                        SUM(amount) AS MonthlyRevenue
+                    FROM transactions
+                    WHERE created_date
+                        BETWEEN DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+                        AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) + 1, 0);
+                """
+            );
+
+            ResultSet set = queryStatement.executeQuery();
+
+            while (set.next()) {
+                revenue = set.getDouble("MonthlyRevenue");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error in getting monthly revenue: " + e);
+        }
+
+        return revenue;
     }
 
     public static int getTotalList() {
@@ -815,7 +1043,7 @@ public class DatabaseFunctions {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                        SELECT * FROM customers
+                        SELECT * FROM CustomersWithBMI
                         WHERE email = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
@@ -836,6 +1064,8 @@ public class DatabaseFunctions {
                     CustomerPanel_Controller.Customer.setMembership(allDataRs.getInt("membership"));
 //                    CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
                     CustomerPanel_Controller.Customer.setAddress(allDataRs.getString("address"));
+                    CustomerPanel_Controller.Customer.setBmi(allDataRs.getDouble("bmi"));
+                    CustomerPanel_Controller.Customer.setPassword(allDataRs.getString("password"));
 
                 }
 
@@ -847,7 +1077,7 @@ public class DatabaseFunctions {
 
             try {
                 queryStatement = dbConnection.prepareStatement("""
-                        SELECT * FROM customers
+                        SELECT * FROM CustomersWithBMI
                         WHERE username = ?;
                         """);
                 queryStatement.setString(1, usernameEmail);
@@ -868,6 +1098,8 @@ public class DatabaseFunctions {
                     CustomerPanel_Controller.Customer.setMembership(allDataRs.getInt("membership"));
                     // CustomerPanel_Controller.Customer.setNicNumber(allDataRs.getString("nic"));
                     CustomerPanel_Controller.Customer.setAddress(allDataRs.getString("address"));
+                    CustomerPanel_Controller.Customer.setBmi(allDataRs.getDouble("bmi"));
+                    CustomerPanel_Controller.Customer.setPassword(allDataRs.getString("password"));
 
                 }
 
@@ -944,7 +1176,7 @@ public class DatabaseFunctions {
         }
     }
 
-    public static boolean deleteData(String tableName, int id) {
+    public static void deleteData(String tableName, int id) {
 
         PreparedStatement queryStatement = null;
 
@@ -957,12 +1189,10 @@ public class DatabaseFunctions {
 
             queryStatement.executeUpdate();
 
-            return true;
         } catch (SQLException e) {
             System.out.println("error in deleting: " + e);
         }
 
-        return false;
     }
 
     public static int generateId(String choice) {
@@ -984,4 +1214,91 @@ public class DatabaseFunctions {
 
     }
 
+    public static int getRemainingDaysOfCustomer(int customerId) {
+        int result = 0;
+
+        try {
+            PreparedStatement queryStatement = dbConnection.prepareStatement(
+            """
+                SELECT
+                    DATEDIFF(
+                        DAY,
+                        GETDATE(),
+                        DATEADD(MONTH, 1, l.latest_transaction_date)
+                    ) AS remaining_days_to_next_month
+                FROM LatestTransactionOfCustomers as l
+                WHERE l.customer_id = ?;
+                """
+            );
+            queryStatement.setInt(1, customerId);
+
+            ResultSet set = queryStatement.executeQuery();
+            while (set.next()) {
+                result = set.getInt("remaining_days_to_next_month");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in customer's remaining days: " + e);
+        }
+
+        return Math.max(0, result);
+    }
+
+    public static double getTotalTransactionsOfCustomer(int customerId) {
+        double result = 0;
+
+        try {
+            PreparedStatement queryStatement = dbConnection.prepareStatement(
+            """
+                   SELECT SUM(amount) AS total_amount
+                   FROM transactions
+                   WHERE fk_customer_id = ?
+                """
+            );
+            queryStatement.setInt(1, customerId);
+
+            ResultSet set = queryStatement.executeQuery();
+            while (set.next()) {
+                result = set.getDouble("total_amount");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in total sum transactions: " + e);
+        }
+
+        return Math.max(0.0, result);
+    }
+
+    public static void updateCustomer(
+        int customerId,
+        String firstName,
+        String lastName,
+        String email,
+        String phoneNumber,
+        String password
+    ) {
+        try {
+            PreparedStatement queryStatement = dbConnection.prepareStatement(
+            """
+                   UPDATE customers
+                   SET
+                        first_name = ?,
+                        last_name = ?,
+                        email = ?,
+                        phone_number = ?,
+                        password = ?
+                   WHERE id = ?
+                """
+            );
+
+            queryStatement.setString(1, firstName);
+            queryStatement.setString(2, lastName);
+            queryStatement.setString(3, email);
+            queryStatement.setString(4, phoneNumber);
+            queryStatement.setString(5, password);
+            queryStatement.setInt(6, customerId);
+
+            queryStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error in total sum transactions: " + e);
+        }
+    }
 }

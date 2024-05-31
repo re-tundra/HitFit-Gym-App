@@ -346,7 +346,8 @@ public class SignUp_Controller {
                 Double.parseDouble(userHeight),
                 monthlyPlan,
                 DatabaseFunctions.generateId("customers"),
-                tempArr[0]
+                tempArr[0],
+            Double.parseDouble(userWeight) / (Math.pow(Double.parseDouble(userHeight), 2))
             );
             DatabaseFunctions.saveToDb(customer);
 

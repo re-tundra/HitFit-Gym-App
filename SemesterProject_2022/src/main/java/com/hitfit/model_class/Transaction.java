@@ -47,11 +47,14 @@ public class Transaction {
         } else {
         StringStatus = "Active";}
 
-        this.actionBtn = button;
-        this.actionBtn.setStyle("-fx-background-color: #00C2FF; -fx-background-radius: 12px;");
-        this.actionBtn.setTextFill(Paint.valueOf("White"));
+        if (button != null) {
+            this.actionBtn = button;
+            this.actionBtn.setStyle("-fx-background-color: #00C2FF; -fx-background-radius: 12px;");
+            this.actionBtn.setTextFill(Paint.valueOf("White"));
 
-        actionBtn.getItems().addAll(item);
+            actionBtn.getItems().addAll(item);
+        }
+
 
         item.setOnAction(event ->
         {

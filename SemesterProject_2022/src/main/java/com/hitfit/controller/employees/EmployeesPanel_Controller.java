@@ -232,7 +232,15 @@ public class EmployeesPanel_Controller implements Initializable {
 
 
             while (resultSet.next()) {
-                employeeslist.add(new Employee(resultSet.getDate("joining_date"), resultSet.getString("first_name"),resultSet.getString("last_name"),resultSet.getString("email"),resultSet.getString("phone_number"),resultSet.getString("nic_number"),resultSet.getString("designation"),resultSet.getInt("salary"),resultSet.getInt("id"),new CustomMenuButton("Action",resultSet.getInt("id") , resultSet.getString("first_name")+resultSet.getString("last_name"), resultSet.getString("email"), resultSet.getString("username"), resultSet.getString("designation"), resultSet.getDouble("salary"), resultSet.getString("gender"),resultSet.getString("phone_number"))));
+                employeeslist.add(new Employee(resultSet.getDate("joining_date"), resultSet.getString("first_name"),resultSet.getString("last_name"),resultSet.getString("email"),resultSet.getString("phone_number"),resultSet.getString("nic_number"),resultSet.getString("designation"),resultSet.getInt("salary"),resultSet.getInt("id"),new CustomMenuButton("Action",
+                        resultSet.getInt("id") ,
+                        resultSet.getString("first_name")+ " " + resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("username"),
+                        resultSet.getString("designation"),
+                        resultSet.getDouble("salary"),
+                        resultSet.getString("gender"),
+                        resultSet.getString("phone_number"))));
                 employeesView.setItems(employeeslist);
                  }
         }

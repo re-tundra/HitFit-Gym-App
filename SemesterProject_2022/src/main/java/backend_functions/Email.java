@@ -55,8 +55,6 @@ public class Email {
             }
             in.close();
 
-            System.out.println(response);
-
             String[] resultString = response.toString().split(",");
             if (resultString[1].contains("\"valid\"")) {
                 System.out.println("email is valid");

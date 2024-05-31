@@ -133,7 +133,6 @@ public class CustomerPanel_Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(Customer);
         CustomerName.setText(Customer.getFirstName());
 
         // created  a class named change fxml and called its function which loads up a new fxml file and makes it the children of stack pane
@@ -196,6 +195,8 @@ public class CustomerPanel_Controller implements Initializable {
         if(file.exists()){
             file.delete();
         }
+
+        Customer = new Customer();
     }
     @FXML
     void AccountSettingsBtn() {

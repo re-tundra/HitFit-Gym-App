@@ -31,10 +31,10 @@ public class TransactionsPanel_Controller implements Initializable {
     private TableColumn<Transaction, Integer> Amount;
 
     @FXML
-    private TableColumn<Transaction, String> BankName;
+    private TableColumn<Transaction, String> PaymentMethod;
 
     @FXML
-    private TableColumn<Transaction, String> BankOwnerName;
+    private TableColumn<Transaction, String> AccountName;
 
     @FXML
     private TableColumn<Transaction, java.sql.Date> TransactionDate;
@@ -105,31 +105,12 @@ public class TransactionsPanel_Controller implements Initializable {
         {
 
             filteredList.setPredicate(transaction -> {
-                if(newvalue.isEmpty() || newvalue.isBlank() || newvalue==null)
-                {
+                if(newvalue.isEmpty() || newvalue.isBlank()) {
                     return true;
                 }
                 String searchkeyword = newvalue.toLowerCase();
 
-                if(transaction.getAccountOwnerName().toLowerCase().indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else if (transaction.getBankName().toLowerCase().indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else if(transaction.getStringStatus().toLowerCase().indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else if(String.valueOf(transaction.getAmount()).indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else if(String.valueOf(transaction.getTransactionId()).indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else
-                {
-                    return false;
-                }
+                return transaction.getAccountOwnerName().toLowerCase().contains(searchkeyword) || transaction.getBankName().toLowerCase().contains(searchkeyword) || transaction.getStringStatus().toLowerCase().contains(searchkeyword) || String.valueOf(transaction.getAmount()).contains(searchkeyword) || String.valueOf(transaction.getTransactionId()).contains(searchkeyword);
 
             });
             SortedList<Transaction> sortedList = new SortedList<>(filteredList);
@@ -140,7 +121,7 @@ public class TransactionsPanel_Controller implements Initializable {
     }
 
     private Node createPage(int pageIndex) {
-        if(TransactionsList.size()>0 && TransactionsList.size()<=10) {
+        if(!TransactionsList.isEmpty() && TransactionsList.size()<=10) {
             pagination.setPageCount(1);
         } else if(TransactionsList.size()>10 && TransactionsList.size()<=20)
         {
@@ -175,8 +156,8 @@ public class TransactionsPanel_Controller implements Initializable {
     private void loadData() throws SQLException {
         showrecords();
         TransactionId.setCellValueFactory(new PropertyValueFactory<>("transactionId"));
-        BankOwnerName.setCellValueFactory(new PropertyValueFactory<>("accountOwnerName"));
-        BankName.setCellValueFactory(new PropertyValueFactory<>("bankName"));
+        AccountName.setCellValueFactory(new PropertyValueFactory<>("accountOwnerName"));
+        PaymentMethod.setCellValueFactory(new PropertyValueFactory<>("paymentMethod"));
         Amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
         TransactionDate.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
         action.setCellValueFactory(new PropertyValueFactory<>("actionBtn"));
@@ -192,14 +173,14 @@ public class TransactionsPanel_Controller implements Initializable {
             while (resultSet.next()) {
                 TransactionsList.add(
                     new Transaction(
-                        resultSet.getBoolean(8),
-                        resultSet.getInt(1),
-                        resultSet.getDate(2),
-                        resultSet.getInt(3),
+                        resultSet.getBoolean("status"),
+                        resultSet.getInt("id"),
+                        resultSet.getDate("created_date"),
+                        resultSet.getInt("amount"),
                         "",
-                        resultSet.getString(6),
-                        new CustomMenuButton("Action", resultSet.getInt(1)),
-                        resultSet.getString(4)
+                        resultSet.getString("account_owner_name"),
+                        resultSet.getBoolean("status") ? null : new CustomMenuButton("Action", resultSet.getInt("id")),
+                        resultSet.getString("p_method")
                     )
                 );
 

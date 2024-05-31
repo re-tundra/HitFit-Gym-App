@@ -52,7 +52,7 @@
                                                       </Text>
                                                    </center>
                                                    <bottom>
-                                                      <Text fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0" text="BMI: Normal" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                                                      <Text fx:id="BMIText" fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0" text="BMI: Normal" textAlignment="CENTER" BorderPane.alignment="CENTER">
                                                          <font>
                                                             <Font name="System Italic" size="14.0" />
                                                          </font>
@@ -108,7 +108,7 @@
                                              <center>
                                                 <BorderPane prefHeight="139.0" prefWidth="337.0" BorderPane.alignment="CENTER">
                                                    <center>
-                                                      <Text fx:id="remainingDays1" fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
+                                                      <Text fx:id="totalTransactions" fill="#232f42" strokeType="OUTSIDE" strokeWidth="0.0" text="0" BorderPane.alignment="CENTER">
                                                          <font>
                                                             <Font name="System Bold" size="30.0" />
                                                          </font>

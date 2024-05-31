@@ -14,6 +14,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class DashboardPanel_Controller implements Initializable {
@@ -40,16 +42,7 @@ public class DashboardPanel_Controller implements Initializable {
 /*--------*/
 
     @FXML
-    private AnchorPane duePane;
-
-    @FXML
-    private AnchorPane expiredPane;
-
-    @FXML
-    private Text membershipsDue;
-
-    @FXML
-    private StackPane memberstckpane;
+    private Text activeMembers;
     @FXML
     public ScrollPane scrollpanedashboard = new ScrollPane();
     @FXML
@@ -66,166 +59,64 @@ public class DashboardPanel_Controller implements Initializable {
     private Text pendingPayments;
 
     @FXML
-    private StackPane ExpensestckPane;
-    @FXML
-    private AnchorPane recentPane;
-    @FXML
-    private StackPane itemstckpane;
-    @FXML
-    private StackPane querystckpane;
+    private LineChart<String, Double> monthlyRevenueChart;
 
     @FXML
-    private LineChart<String, Integer> monthlyProfitChart;
-
-    @FXML
-    private BarChart<String, Integer> monthlyExpenseChart;
+    private BarChart<String, Integer> monthlyRegistrationChart;
     @FXML
     private Text totalMembers;
-    private int noOfCustomers;
 
-    @FXML
-    void CompeleteBtn(ActionEvent event) {
-        System.out.println(querystckpane.getChildren());
-        CompletedButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 12 0 0 0;");
-        querystckpane.getChildren().get(1).setVisible(true);
-        new animatefx.animation.FadeIn(querystckpane).play();
-        querystckpane.getChildren().get(0).setVisible(false);
-        PendingButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
-    }
+    private void updateRecords() {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
 
-    @FXML
-    void Pendingbtn(ActionEvent event) {
-        PendingButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 0 0 0 0;");
-        querystckpane.getChildren().get(0).setVisible(true);
-        new animatefx.animation.FadeIn(querystckpane).play();
-        querystckpane.getChildren().get(1).setVisible(false);
-        CompletedButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 12 0 0 0;");
-    }
-    @FXML
-    void duebtn(ActionEvent event) {
-        dueButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 0 0 0 0;");
-        memberstckpane.getChildren().get(1).setVisible(true);
-        new animatefx.animation.FadeIn(memberstckpane).play();
-        for(int i=0;i<2;i++)
-        {
-            if(i!=1){
-                        memberstckpane.getChildren().get(i).setVisible(false);
-                    }
+        XYChart.Series<String, Double> revenueSeries = new XYChart.Series<>();
+        XYChart.Series<String, Integer> registrationSeries = new XYChart.Series<>();
+        registrationSeries.setName(currentYear + "'s Monthly Registrations");
+        revenueSeries.setName(currentYear + "'s Monthly Revenue");
+
+        monthlyRevenueChart.getData().clear();
+        monthlyRegistrationChart.getData().clear();
+
+        for (int i = 1; i <= 12; i++) {
+            double revenue = DatabaseFunctions.getMonthlyRevenue(i);
+            int registeredCustomers = DatabaseFunctions.getMonthlyNumberOfRegistrations(i);
+
+            revenueSeries.getData().add(new XYChart.Data<>(String.valueOf(i), revenue));
+            registrationSeries.getData().add(new XYChart.Data<>(String.valueOf(i), registeredCustomers));
         }
-        expiredButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
-        recentButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 12 0 0 0;");
 
-    }
+        monthlyRevenueChart.getData().add(revenueSeries);
+        monthlyRegistrationChart.getData().add(registrationSeries);
 
-    @FXML
-    void expiredbtn(ActionEvent event) {
-        expiredButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 0 0 0 0;");
-        memberstckpane.getChildren().get(2).setVisible(true);
-        new animatefx.animation.FadeIn(memberstckpane).play();
-        for(int i=0;i<1;i++)
-        {
-            memberstckpane.getChildren().get(i).setVisible(false);
+        int noOfCustomers = 0, activeMembersCount = 0;
+        double revenue = 0.0;
+
+        try{
+            int[] customersCount = DatabaseFunctions.getNumberOfCustomers();
+
+            revenue = DatabaseFunctions.getCurrentMonthRevenue();
+            noOfCustomers = customersCount[0];
+            activeMembersCount = customersCount[1];
         }
-        dueButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
-        recentButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 12 0 0 0;");
-
-    }
-
-    @FXML
-    void recentBtn(ActionEvent event) {
-        System.out.println(memberstckpane.getChildren());
-        recentButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 12 0 0 0;");
-        memberstckpane.getChildren().get(0).setVisible(true);
-        new animatefx.animation.FadeIn(memberstckpane).play();
-
-        for(int i=1;i<3;i++)
-        {
-            memberstckpane.getChildren().get(i).setVisible(false);
+        catch (Exception e){
+            e.printStackTrace();
         }
-        dueButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
-        expiredButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
+
+        monthlyRevenue.setText(String.format("%.2f", revenue));
+        totalMembers.setText(String.valueOf(noOfCustomers));
+        activeMembers.setText(String.valueOf(activeMembersCount));
     }
 
 
     @FXML
-    void RecentExpBtn(ActionEvent event) {
-        RecentButtonExpenses.setStyle("-fx-background-color: #03032c; -fx-background-radius: 12 0 0 0;");
-        ExpensestckPane.getChildren().get(0).setVisible(true);
-        new animatefx.animation.FadeIn(ExpensestckPane).play();
-        ExpensestckPane.getChildren().get(1).setVisible(false);
-        HistoryButton.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 0 0 0 0;");
+    void refreshbtn(ActionEvent event) {
+        updateRecords();
     }
-    @FXML
-    void HistoryBtn(ActionEvent event) {
-        HistoryButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 0 0 0 0;");
-        ExpensestckPane.getChildren().get(1).setVisible(true);
-        new animatefx.animation.FadeIn(ExpensestckPane).play();
-        ExpensestckPane.getChildren().get(0).setVisible(false);
-        RecentButtonExpenses.setStyle("-fx-background-color: #8E9DB5; -fx-background-radius: 12 0 0 0;");
-
-    }
-
-    @FXML
-    void InStockBtn(ActionEvent event) {
-        InStockButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 12 0 0 0;");
-        itemstckpane.getChildren().get(0).setVisible(true);
-        new animatefx.animation.FadeIn(itemstckpane).play();
-        itemstckpane.getChildren().get(1).setVisible(false);
-        OutofStockButton.setStyle("-fx-background-color: #8e9db5; -fx-background-radius: 0 0 0 0;");
-    }
-
-    @FXML
-    void OutofStockBtn(ActionEvent event) {
-        InStockButton.setStyle("-fx-background-color: #839db5; -fx-background-radius: 12 0 0 0;");
-        itemstckpane.getChildren().get(0).setVisible(false);
-        new animatefx.animation.FadeIn(itemstckpane).play();
-        itemstckpane.getChildren().get(1).setVisible(true);
-        OutofStockButton.setStyle("-fx-background-color: #03032c; -fx-background-radius: 0 0 0 0;");
-
-    }
-
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO Get sum of All packages of one month and set here
-        monthlyRevenue.setText("1000");
-
-
-        /*--Members card--*/
-        for(int i =1; i<3;i++)
-        {
-            memberstckpane.getChildren().get(i).setVisible(false);
-        }
-        /*--End--*/
-
-
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        monthlyProfitChart.getData().add(series);
-
-        XYChart.Series<String, Integer> series1 = new XYChart.Series<>();
-        series1.setName("Monthly Expense in Rupees");
-        series1.getData().add(new XYChart.Data<>("1", 2000));
-        series1.getData().add(new XYChart.Data<>("2", 40000));
-        series1.getData().add(new XYChart.Data<>("3", 60000));
-        series1.getData().add(new XYChart.Data<>("4", 80000));
-        series1.getData().add(new XYChart.Data<>("5", 100000));
-        series1.getData().add(new XYChart.Data<>("6", 100000));
-        series1.getData().add(new XYChart.Data<>("7", 100000));
-        series1.getData().add(new XYChart.Data<>("8", 100000));
-        series1.getData().add(new XYChart.Data<>("9", 100000));
-        series1.getData().add(new XYChart.Data<>("10", 100000));
-        series1.getData().add(new XYChart.Data<>("11", 100000));
-        series1.getData().add(new XYChart.Data<>("12", 100000));
-        monthlyExpenseChart.getData().add(series1);
-        try{
-            noOfCustomers = DatabaseFunctions.getNumberOfCustomers();
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
-        totalMembers.setText(String.valueOf(noOfCustomers));
-
-
+        updateRecords();
     }
 }

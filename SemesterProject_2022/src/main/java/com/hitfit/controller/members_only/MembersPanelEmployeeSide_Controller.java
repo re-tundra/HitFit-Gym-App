@@ -211,6 +211,7 @@ public class MembersPanelEmployeeSide_Controller implements Initializable {
                         resultSet.getString("phone_number"),
                         resultSet.getString("nic"),
                         Integer.parseInt(resultSet.getString("membership")),
+                        resultSet.getBoolean("is_active"),
                         new CustomMenuButton(resultSet.getInt("id"),
                                 "Action",
                                 resultSet.getString("first_name")+" "+resultSet.getString("last_name"),

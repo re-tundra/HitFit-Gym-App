@@ -16,22 +16,19 @@ public class Customer extends Person implements Comparable {
     private String dob;
     private Double weight;
     private Double height;
+    private Double bmi;
+    private String bmiCategory;
     private int monthlyPlan;
     private Package monthlyPackage;
     private int customerId;
-    private boolean isActive;
+    private String isActive;
     private String passwordSalt;
-    private String Fullname;
     private BMI CustomerBMI;
     private Boolean AdminAcces;
     private int Id;
 
     public String getFullname() {
-        return Fullname;
-    }
-
-    public void setFullname(String fullname) {
-        Fullname = fullname;
+        return getFirstName() + " " + getLastName();
     }
 
     /*--------*/
@@ -50,12 +47,21 @@ public class Customer extends Person implements Comparable {
         this.actionBtn = actionBtn;
     }
 
-    public Customer(Boolean AdminAccess, int Id, String firstName, String lastName, String email, String phoneNumber, String nicNumber, int monthlyPlan, CustomMenuButton customMenuButton) {
+    public Customer(Boolean AdminAccess,
+                    int Id,
+                    String firstName,
+                    String lastName,
+                    String email,
+                    String phoneNumber,
+                    String nicNumber,
+                    int monthlyPlan,
+                    boolean isActive,
+                    CustomMenuButton customMenuButton) {
         super(firstName, lastName, email, "gender", phoneNumber, "userName", "password", nicNumber);
         this.Id = Id;
         this.monthlyPlan = monthlyPlan;
-        Fullname = firstName + lastName;
         this.AdminAcces = AdminAccess;
+        this.isActive = isActive ? "Activated" : "Not Activated";
 
 
         /*Action Button Stuff*/
@@ -118,7 +124,8 @@ public class Customer extends Person implements Comparable {
                     Double height,
                     int monthlyPlan,
                     int customerId,
-                    String passwordSalt) {
+                    String passwordSalt,
+                    Double bmi) {
         super(firstName, lastName, email, gender, phoneNumber, userName, password, nicNumber);
         this.address = address;
         this.dob = dob;
@@ -127,6 +134,8 @@ public class Customer extends Person implements Comparable {
         this.monthlyPlan = monthlyPlan;
         this.customerId = customerId;
         this.passwordSalt = passwordSalt;
+
+        this.bmi = bmi;
     }
 
     public Package getMonthlyPackage() {
@@ -165,6 +174,14 @@ public class Customer extends Person implements Comparable {
         return height;
     }
 
+    public Double getBmi() {
+        return bmi;
+    }
+
+    public void setBmi(Double bmi) {
+        this.bmi = bmi;
+    }
+
     public void setWeight(Double weight) {
         this.weight = weight;
     }
@@ -175,6 +192,18 @@ public class Customer extends Person implements Comparable {
 
     public int getMembership() {
         return monthlyPlan;
+    }
+
+    public String getMembershipCategory() {
+        String PackageType;
+        switch (monthlyPlan) {
+            case 2000 -> PackageType = "Beginner";
+            case 3000 -> PackageType = "Starter";
+            case 4500 -> PackageType = "Pro";
+            default -> PackageType = "";
+        }
+
+        return PackageType;
     }
 
     public void setMembership(int monthlyPlan) {
@@ -189,13 +218,13 @@ public class Customer extends Person implements Comparable {
         this.customerId = customerId;
     }
 
-    public boolean isActive() {
+    public String getIsActive() {
         return isActive;
     }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
+//
+//    public void setActive(boolean active) {
+//        isActive = active;
+//    }
 
     public String getPasswordSalt() {
         return passwordSalt;

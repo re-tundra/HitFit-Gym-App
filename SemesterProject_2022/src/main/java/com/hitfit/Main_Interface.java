@@ -6,6 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -14,6 +15,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -29,6 +31,9 @@ public class Main_Interface implements Initializable {
 
     @FXML
     private AnchorPane navPanel;
+
+    @FXML
+    private Button accountSetting;
 
     @FXML
     private Text Username;
@@ -106,7 +111,8 @@ public class Main_Interface implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TODO Get admin username or name from db to set here
-        Username.setText(" ");
+        Username.setText("Admin");
+        accountSetting.setVisible(false);
 
         // created  a class named change fxml and called its function which loads up a new fxml file and makes it the children of stack pane
         dashboardPanel.getfxml("DashboardPanel.fxml");
@@ -187,6 +193,8 @@ public class Main_Interface implements Initializable {
             if (i != dashboard_idx)
                 stackPane.getChildren().get(i).setVisible(false);
         }
+        Node e = stackPane.getChildren().get(dashboard_idx);
+
         stackPane.getChildren().get(dashboard_idx).setVisible(true);
         new animatefx.animation.FadeIn(stackPane).play();
     }

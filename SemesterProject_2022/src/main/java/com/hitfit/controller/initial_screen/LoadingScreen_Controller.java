@@ -57,7 +57,19 @@ public class LoadingScreen_Controller implements Initializable {
                             new LogIn_Form_Controller().login(username, password);
                             loadingStage.getScene().getWindow().hide();
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            Platform.runLater(() -> {
+                                FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("LoginSignUp.fxml"));
+                                try {
+                                    scene = new Scene(fxmlLoader.load());
+                                } catch (IOException e2) {
+                                    throw new RuntimeException(e2);
+                                }
+
+                                stage.setScene(scene);
+                                stage.initStyle(StageStyle.DECORATED);
+                                stage.show();
+                                loadingStage.getScene().getWindow().hide();
+                            });
                         }
                     });
                 } else {

@@ -2,7 +2,7 @@ CREATE DATABASE gym_database;
 USE gym_database;
 
 CREATE TABLE customers (
-    id INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY IDENTITY(1,1),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(255),
@@ -10,26 +10,27 @@ CREATE TABLE customers (
     password VARCHAR(255),
     username VARCHAR(255),
     gender VARCHAR(10),
-    weight VARCHAR(20),
+    weight FLOAT,
+    height FLOAT,
     dob DATE,
     membership INT,
-    is_active BOOLEAN,
-    address TEXT
+    is_active BIT,
+    address VARCHAR(MAX)
 );
 
 CREATE TABLE transactions (
-    id INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY IDENTITY(1,1),
     created_date DATE,
     amount INT,
     p_method VARCHAR(255),
     account_owner_name VARCHAR(255),
     fk_customer_id INT,
-    status BOOLEAN,
+    status BIT,
     FOREIGN KEY (fk_customer_id) REFERENCES customers(id)
 );
 
 CREATE TABLE employees (
-    id INT PRIMARY KEY auto_increment,
+    id INT PRIMARY KEY IDENTITY(1,1),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     -- designation VARCHAR(255),
@@ -68,12 +69,12 @@ CREATE TABLE employees (
 
 -- CREATE TABLE bmi (
 --     id INT PRIMARY KEY,
---     weight DOUBLE,
+--     weight FLOAT,
 --     recorded_date DATE,
 --     fk_customer_id INT,
 --     recorded_month VARCHAR(20),
---     height DOUBLE,
---     bmi_value DOUBLE,
+--     height FLOAT,
+--     bmi_value FLOAT,
 --     FOREIGN KEY (fk_customer_id) REFERENCES customers(id)
 -- );
 

@@ -1,6 +1,7 @@
 package com.hitfit.controller.members_only;
 
 import com.hitfit.controller.CustomMenuButton;
+import com.hitfit.controller.GeneralFunctions;
 import com.hitfit.database.DatabaseFunctions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,15 +9,11 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import com.hitfit.model_class.Customer;
 
 import java.io.IOException;
@@ -56,7 +53,7 @@ public class MembersPanel_Controller implements Initializable {
     private TableColumn<Customer, String> LastName;
 
     @FXML
-    private TableColumn<Customer, String> nic;
+    private TableColumn<Customer, String> isActive;
 
     @FXML
     private TableColumn<Customer, String> phone;
@@ -88,41 +85,13 @@ public class MembersPanel_Controller implements Initializable {
         {
 
             filteredList.setPredicate(customer -> {
-                if(newvalue.isEmpty() || newvalue.isBlank() || newvalue==null)
+                if(newvalue.isEmpty() || newvalue.isBlank())
                 {
                     return true;
                 }
                 String searchkeyword = newvalue.toLowerCase();
 
-                if(customer.getFullname().toLowerCase().indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                }
-                else if(customer.getFirstName().toLowerCase().indexOf(searchkeyword) > -1)
-                {
-                    return true;
-                } else if (customer.getLastName().toLowerCase().indexOf(searchkeyword) > -1)
-            {
-                    return true;
-            } else if(customer.getPhoneNumber().toLowerCase().indexOf(searchkeyword) > -1)
-            {
-                return true;
-            } else if(customer.getNicNumber().toLowerCase().indexOf(searchkeyword) > -1)
-            {
-                return true;
-            } else if(String.valueOf(customer.getId()).indexOf(searchkeyword) > -1)
-            {
-                return true;
-            } else if((String.valueOf(customer.getMembership()).toLowerCase().indexOf(searchkeyword) > -1))
-            {
-                return true;
-            }  else if (customer.getEmail().toLowerCase().indexOf(searchkeyword) > -1)
-            {
-                return true;
-            } else
-            {
-                return false;
-            }
+                return customer.getFullname().toLowerCase().contains(searchkeyword) || customer.getFirstName().toLowerCase().contains(searchkeyword) || customer.getLastName().toLowerCase().contains(searchkeyword) || customer.getPhoneNumber().toLowerCase().contains(searchkeyword) || customer.getNicNumber().toLowerCase().contains(searchkeyword) || String.valueOf(customer.getId()).contains(searchkeyword) || (String.valueOf(customer.getMembership()).toLowerCase().contains(searchkeyword)) || customer.getEmail().toLowerCase().contains(searchkeyword);
 
             });
 
@@ -142,7 +111,7 @@ public class MembersPanel_Controller implements Initializable {
 
     }
     private Node createPage(int pageIndex) {
-        if(memberslist.size()>0 && memberslist.size()<=10) {
+        if(!memberslist.isEmpty() && memberslist.size()<=10) {
             pagination.setPageCount(1);
         } else if(memberslist.size()>10 && memberslist.size()<=20)
         {
@@ -175,14 +144,7 @@ public class MembersPanel_Controller implements Initializable {
     }
 
     public void view() throws IOException {
-        membercardstage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("membersDetailCard.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        membercardstage.setScene(scene);
-        membercardstage.initStyle(StageStyle.UNDECORATED);
-        membercardstage.initModality(Modality.APPLICATION_MODAL);
-        membercardstage.showAndWait();
-        membercardstage.centerOnScreen();
+        new GeneralFunctions().switchSceneModality("membersDetailCard.fxml");
     }
     public void loadData() throws SQLException {
         showrecords();
@@ -191,8 +153,8 @@ public class MembersPanel_Controller implements Initializable {
         LastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         email.setCellValueFactory(new PropertyValueFactory<>("email"));
         phone.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        nic.setCellValueFactory(new PropertyValueFactory<>("nicNumber"));
-        plan.setCellValueFactory(new PropertyValueFactory<>("monthlyPlan"));
+        isActive.setCellValueFactory(new PropertyValueFactory<>("isActive"));
+        plan.setCellValueFactory(new PropertyValueFactory<>("membershipCategory"));
         action.setCellValueFactory(new PropertyValueFactory<>("actionBtn"));
     }
 
@@ -209,14 +171,15 @@ public class MembersPanel_Controller implements Initializable {
                          resultSet.getString("last_name"),
                          resultSet.getString("email"),
                          resultSet.getString("phone_number"),
-                         resultSet.getString("nic"),
+                         "",
                          Integer.parseInt(resultSet.getString("membership")),
+                         resultSet.getBoolean("is_active"),
                          new CustomMenuButton(resultSet.getInt("id"),
                                  "Action",
                                  resultSet.getString("first_name")+" "+resultSet.getString("last_name"),
                                  resultSet.getDouble("weight"),
                                  resultSet.getDouble("height"),
-                                 "XYZ",
+                                 resultSet.getString("address"),
                                  resultSet.getString("email"),
                                  resultSet.getString("username"),
                                  resultSet.getString("membership"))));

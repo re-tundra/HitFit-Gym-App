@@ -1,5 +1,7 @@
 package com.hitfit.controller;
 
+import com.hitfit.controller.customer.CustomerPanel_Controller;
+import com.hitfit.database.DatabaseFunctions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,10 +17,21 @@ import java.util.ResourceBundle;
 public class AccontSettingsPanel_Controller implements Initializable {
 
     @FXML
+    private Button editEmailBtn;
+    @FXML
+    private Button editNameBtn;
+    @FXML
+    private Button editPhoneBtn;
+    @FXML
+    private Button updatePasswordButton;
+
+    @FXML
     private TextField editEmail;
 
     @FXML
-    private TextField editName;
+    private TextField editFirstName;
+    @FXML
+    private TextField editLastName;
 
     @FXML
     private TextField editPassword;
@@ -44,12 +57,14 @@ public class AccontSettingsPanel_Controller implements Initializable {
     @FXML
     void editEmailButton(ActionEvent event) {
         editEmail.setVisible(true);
+        editEmailBtn.setVisible(false);
         emailField.setVisible(false);
     }
+
     @FXML
     public void setData(KeyEvent e){
         newEmail = editEmail.getText();
-        newName = editName.getText();
+        newName = editFirstName.getText() + " " + editLastName.getText();
         newPhoneNumber = editPhoneNumber.getText();
         newPassword = editPassword.getText();
 
@@ -57,72 +72,96 @@ public class AccontSettingsPanel_Controller implements Initializable {
             if(!newName.isEmpty() && !newName.isBlank()) {
                 nameField.setText(newName);
                 nameField.setVisible(true);
-                editName.setVisible(false);
+                editFirstName.setVisible(false);
+                editLastName.setVisible(false);
             }
-            else {
-                nameField.setText("Ayaan");
-            }
+
             if(!newEmail.isBlank() && !newEmail.isEmpty()) {
                 emailField.setText(newEmail);
                 emailField.setVisible(true);
                 editEmail.setVisible(false);
             }
-            else {
-                emailField.setText("test@gmail.com");
-            }
+
             if(!newPhoneNumber.isBlank() && !newPhoneNumber.isEmpty()) {
                 phoneField.setText(newPhoneNumber);
                 phoneField.setVisible(true);
                 editPhoneNumber.setVisible(false);
             }
-            else {
-                phoneField.setText("0300 0000000");
-            }
+
             editPassword.setVisible(false);
-            }
+        }
     }
 
     @FXML
     void editNameButton(ActionEvent event) {
-        editName.setVisible(true);
+        editFirstName.setVisible(true);
+        editLastName.setVisible(true);
+        editNameBtn.setVisible(false);
         nameField.setVisible(false);
-        editName.setText("");
     }
 
     @FXML
     void editPhoneButton(ActionEvent event) {
         editPhoneNumber.setVisible(true);
+        editPhoneBtn.setVisible(false);
         phoneField.setVisible(false);
-        editPhoneNumber.setText("");
     }
 
     @FXML
     void updatePasswordButton(ActionEvent event) {
+        updatePasswordButton.setVisible(false);
         editPassword.setVisible(true);
-        editPassword.setText("");
-
     }
     @FXML
     void Save() {
         newEmail = editEmail.getText();
-        newName = editName.getText();
+        newName = editFirstName.getText() + " " + editLastName.getText();
         newPhoneNumber = editPhoneNumber.getText();
         newPassword = editPassword.getText();
 
+        nameField.setText(newName);
+        emailField.setText(newEmail);
+        phoneField.setText(newPhoneNumber);
+
+        editPassword.setText("");
         editEmail.setVisible(false);
-        editName.setVisible(false);
+        editFirstName.setVisible(false);
+        editLastName.setVisible(false);
         editPhoneNumber.setVisible(false);
         editPassword.setVisible(false);
+
+        editEmailBtn.setVisible(true);
+        editNameBtn.setVisible(true);
+        editPhoneBtn.setVisible(true);
+        updatePasswordButton.setVisible(true);
+
         emailField.setVisible(true);
         nameField.setVisible(true);
         phoneField.setVisible(true);
+
+        DatabaseFunctions.updateCustomer(
+            CustomerPanel_Controller.Customer.getCustomerId(),
+            editFirstName.getText(),
+            editLastName.getText(),
+            newEmail,
+            newPhoneNumber,
+            newPassword.isEmpty() ? CustomerPanel_Controller.Customer.getPassword() : newPassword
+        );
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO Get Data from Database on basis of username and set here
-            nameField.setText(newName);
-            emailField.setText(newEmail);
-            phoneField.setText(newPhoneNumber);
+        newName = CustomerPanel_Controller.Customer.getFullname();
+        newEmail = CustomerPanel_Controller.Customer.getEmail();
+        newPhoneNumber = CustomerPanel_Controller.Customer.getPhoneNumber();
+
+        nameField.setText(newName);
+        emailField.setText(newEmail);
+        phoneField.setText(newPhoneNumber);
+
+        editFirstName.setText(CustomerPanel_Controller.Customer.getFirstName());
+        editLastName.setText(CustomerPanel_Controller.Customer.getLastName());
+        editEmail.setText(newEmail);
+        editPhoneNumber.setText(newPhoneNumber);
     }
 }
